@@ -26,7 +26,7 @@ const navigate = useNavigate();
     //   const response = await refetch();
     const response= await axios.get(`http://localhost:4321/officer/${formik.values.userName}/${formik.values.password}`)  
     console.log(response.data);
-    navigate("/openfile")
+    navigate("/openfile");
 
     } 
     catch (e) {
