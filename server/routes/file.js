@@ -6,6 +6,7 @@ const fileRouter = express.Router();
 
 fileRouter.route("/")
     .post(fileCntrl.addFile)
+    .delete(fileCntrl.deleteFiles)
 
 fileRouter.route("/:id")
     .get(fileCntrl.getFileByID)

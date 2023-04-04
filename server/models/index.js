@@ -46,7 +46,7 @@ db.languages= require('./language')(sequelize, DataTypes);
 db.managers.belongsTo(db.companies, {foreignKey:'companyId'})
 db.officers.belongsTo(db.managers, {foreignKey:'managerId'})
 db.officers.belongsTo(db.profession_units, {foreignKey:'professionUnitId'})
-db.officers.belongsTo(db.permissions, {foreignKey:'permissionId'})
+// db.officers.belongsTo(db.permissions, {foreignKey:'permissionId'})
 db.files.belongsTo(db.statuses, {foreignKey:'statusId'})
 db.files.belongsTo(db.officers, {foreignKey:'officerId'})
 db.documents.belongsTo(db.files, {foreignKey:'fileId', onDelete: 'Cascade', onUpdate: 'Cascade'})

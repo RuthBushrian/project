@@ -1,26 +1,35 @@
 const base64toFile = require('node-base64-to-file');
 const {unlink}= require('node:fs/promises');
-exports.uploadDocument=(base64String)=>
+const isBase64 = require('is-base64');
+
+exports.uploadDocument=async(base64String, name, type, fileId)=>
 {
   
-    //const base64String ='data:image/png;base64,iVBORw0KGgo...';
-    // create an image with the a given name ie 'image'
-    // try {
-    // const imagePath = await base64toFile(base64String, { filePath: './uploads', fileName: "image", types: ['png'], fileMaxSize: 3145728 });
-    // console.log(imagePath)
-    // } catch (error) {
-    // console.log(error)
-    // }
+  const document=`data:${type};base64,`.concat(base64String);
 
 
-}
+    await base64toFile(base64String, 
+      {
+        filePath: `${process.env.PATH_FILE}${fileId}//`,
+        fileName: name,
+        types: [type],
+        fileMaxSize: 3145728
+      }
+    );
+
+};
+
 exports.deleteDocument=async(document)=>
 {
   
-    try {
+    try 
+    {
       await unlink(process.env.PATH_FILE+document.fileId+"//"+document.name);
       console.log('successfully deleted /tmp/hello');
-    } catch (error) {
+    } 
+    
+    catch (error) 
+    {
       console.error('there was an error:', error.message);
     }
 }

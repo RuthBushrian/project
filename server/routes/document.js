@@ -5,7 +5,7 @@ const documentCntrl = require("../controllers/document");
 const documentRouter = express.Router();
 
 documentRouter.route("/")
-    .post(documentCntrl.addDocument)
+    .post(documentCntrl.addDocuments)
 
 documentRouter.route("/:id")
     .get(documentCntrl.getDocumentById)

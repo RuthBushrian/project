@@ -1,20 +1,38 @@
 const documentDal=require('../dal/document');
-const {deleteDocument, updateDocument }=require('../service/document')
-exports.addDocument=(req, res)=>{
- 
-  documentDal.addDocument(req.body)
-    .then(data => {
-      res.status(201).json({ message: 'created document' })
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Document."
-      });
-    });
+const {deleteDocument, uploadDocument }=require('../service/document')
+exports.addDocuments=(req, res)=>{
+
+  try
+  {
+    this.addDocuments2(req.body.documents, 38)
+    res.status(201).json({ message: 'created documents' })
+  }
+  catch(err)
+  {
+    res.status(400).json({ message: `can't create documents. ${err}` })
+  }
 }
 
+exports.addDocuments2=(documents, fileId)=>
+{
+  console.log(documents);
+    docsToCraete= documents.map((doc)=> {return {fileId: fileId, name: doc.name}})
+    documentDal.addDocument(docsToCraete)
+    .then(data => {
+        if(!data)
+        {
+          throw new Error("can't add document to DB")
+        }
+        console.log(data);
 
+    documents.forEach(doc => {
+      const type= doc.document.slice(4, doc.document.indexOf(';'));
+        uploadDocument(doc.document, doc.name, type,fileId );
+      });
+
+  });
+  
+}
 
 exports.updateDocumentById=(req, res)=>{
   const id = req.params.id;

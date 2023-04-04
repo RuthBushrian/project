@@ -3,7 +3,7 @@ const Document= db.documents;
    
 exports.addDocument = (documentToAdd) => {
 
-    return Document.create(documentToAdd);
+    return Document.bulkCreate(documentToAdd);
 };
     
 exports.getDocumentById=(id)=>{

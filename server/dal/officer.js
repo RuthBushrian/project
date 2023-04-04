@@ -12,6 +12,12 @@ exports.getOfficerByID=(id)=>{
 
 };
 
+exports.getOfficerByIdNumber= (id)=>
+{
+  console.log("getOfficerByIdNumber");
+  return  Officer.findOne({where:{idNumber:id}});
+}
+
 
 exports.updateOfficer=(id,officerToUpdate)=>{
     return Officer.update(officerToUpdate, {

@@ -21,7 +21,12 @@ exports.createFolder=(folderName)=>
 exports.deleteFolder=(folderName)=>
 {
 
+    try{
     fs.rmSync(folderName, { recursive: true, force: true });
+}
+catch{
+    console.log(`can't delete folder ${folderName}`);
+}
     // if (!fs.existsSync(folderName)) 
     // {
     //     fs.mkdir(folderName, (err) => {

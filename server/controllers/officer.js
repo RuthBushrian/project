@@ -4,12 +4,21 @@ const officer = require('../models/officer');
 exports.login=(req, res) =>
 {
   const id =req.params.id;
-    officerDal.getOfficerByID(id).then(data => {
+  const password= req.params.password;
+    officerDal.getOfficerByIdNumber(id)
+    .then(data => {
         if (data) {
+          console.log(data);
+          if(data.password==password)
             res.send(data);
-        } else {
+          else
             res.status(404).send({
-            message: `Cannot find Officer with id=${id}.`
+              message: `Cannot find Officer with id=${id} and password ${password}.`
+              })
+        } 
+        else {
+            res.status(404).send({
+            message: `Cannot find Officer with id=${id} and password ${password}.`
             });
         }
         })

@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
             name: { type: DataTypes.STRING, allowNull: false },
             result: { type: DataTypes.FLOAT, defaultValue : null },
             languageId: { type: DataTypes.INTEGER }
-        },
+        }, 
         {
             timestamps: false,
         });
