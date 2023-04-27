@@ -1,27 +1,36 @@
-import React from "react";
-import GetAllFiles from "../Hooks/files";
-import AllFiles from "./file/allFiles";
-import FileDetail from "./file/fileDetails";
-import ValidInput from "./validInput";
-import UploadDocuments from "./file/uploadDocuments";
-import OpenFile from "./file/openFile";
-import Login from "./login";
-import File from "./file/file"
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 
 const Home= ()=>
 {
-    return (
-        <>
-        {/* hello home*/}
-        {/* <AllFiles></AllFiles>  */}
-        {/* <Login></Login> */}
-        <UploadDocuments></UploadDocuments>
-        {/* <OpenFile></OpenFile> */}
-        {/* <File></File> */}
-        {/* <FileDetail></FileDetail> */}
-        {/* <ValidInput invalidFunction={(x)=>x.length>5} name="שם משתמש" ></ValidInput> */}
-        </>
-    )
-}
+
+      const [fileUrl, setFileUrl] = useState('');
+    
+      useEffect(() => {
+        axios.get('http://localhost:4321/a', {
+      responseType: 'arraybuffer'
+    })
+    .then(response => {
+      const blob = new Blob([response.data], { type: 'image/png' });
+      const fileUrl = URL.createObjectURL(blob);
+      setFileUrl({ fileUrl });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+
+      }, []);
+    
+      return (
+        <div>
+          {fileUrl && <iframe src={fileUrl} width="100%" height="500px" />}
+        </div>
+      );
+    }
+        
+      
+    
+
 
 export default Home;

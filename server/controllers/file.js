@@ -13,13 +13,17 @@ exports.addFile = (req, res) => {
         if(file)
         { 
           const folderName = process.env.PATH_FILE+file.idfile;
+          
           createFolder(folderName);
 
           addDocuments2(req.body.documents, file.idfile);
           
           stageDal.addStage({fileId:file.idfile,statusId:1, date:new Date() })
-
+          .then((stage)=>
+          {
+          console.log(stage);
           res.status(201).json({ message: 'created file', body: file });
+        })
         }
         else 
           return res.status(400).json({ message: 'error' })
@@ -84,11 +88,9 @@ exports.updateFile=async(req, res)=>{
       message: `Error retrieving last file with id= ${id}.`,
     });
   };
-  // lfile=lfile[0];
   
   if(req.body.statusId && lfile.statusId!=req.body.statusId){
     const ts = Date.now();
-    // const date_ob = new Date(ts);
   stageDal
     .addStage({fileId:id,statusId:req.body.statusId,date:ts})
     .then()
@@ -100,15 +102,18 @@ exports.updateFile=async(req, res)=>{
   }
   fileDal.updateFile(id ,req.body)
   .then(num => {
-      if (num == 1) {
+    console.log("num: ");
+    console.log(num); 
+      // if (num == 1) {
         res.send({
           message: "File was updated successfully."
         });
-      } else {
-        res.send({
-          message: `Cannot update File with id=${id}. Maybe File was not found or req.body is empty!`
-        });
-      }
+      // } 
+      // else {
+      //   res.send({
+      //     message: `Cannot update File with id=${id}. Maybe File was not found or req.body is empty!`
+      //   });
+      // }
     })
     .catch(err => {
       res.status(500).send({

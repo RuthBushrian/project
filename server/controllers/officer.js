@@ -29,9 +29,9 @@ exports.login=(req, res) =>
     });
 }
 
-exports.getOfficerByID=(req, res)=>{
+exports.getOfficerByIDNumber=(req, res)=>{
     const id =req.params.id;
-    officerDal.getOfficerByID(id).then(data => {
+    officerDal.getOfficerByIDNumber(id).then(data => {
         if (data) {
             res.send(data);
         } else {

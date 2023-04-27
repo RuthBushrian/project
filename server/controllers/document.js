@@ -1,42 +1,36 @@
-const documentDal=require('../dal/document');
-const {deleteDocument, uploadDocument }=require('../service/document')
-exports.addDocuments=(req, res)=>{
-
-  try
-  {
-    this.addDocuments2(req.body.documents, 38)
+const documentDal = require('../dal/document');
+const { deleteDocument, uploadDocument } = require('../service/document')
+exports.addDocuments = (req, res) => {
+console.log("\n\n\n\naddDocuments");
+  try {
+    this.addDocuments2(req.body.documents, req.params.id)
     res.status(201).json({ message: 'created documents' })
   }
-  catch(err)
-  {
+  catch (err) {
     res.status(400).json({ message: `can't create documents. ${err}` })
   }
 }
 
-exports.addDocuments2=(documents, fileId)=>
-{
-  console.log(documents);
-    docsToCraete= documents.map((doc)=> {return {fileId: fileId, name: doc.name}})
-    documentDal.addDocument(docsToCraete)
+exports.addDocuments2 = (documents, fileId) => {
+  docsToCraete = documents.map((doc) => { return { fileId: fileId, name: doc.name } })
+  documentDal.addDocument(docsToCraete)
     .then(data => {
-        if(!data)
-        {
-          throw new Error("can't add document to DB")
-        }
-        console.log(data);
+      if (!data) {
+        throw new Error("can't add document to DB")
+      }
 
-    documents.forEach(doc => {
-      const type= doc.document.slice(4, doc.document.indexOf(';'));
-        uploadDocument(doc.document, doc.name, type,fileId );
+      documents.forEach(doc => {
+        const type = doc.document.slice(4, doc.document.indexOf(';'));
+        uploadDocument(doc.document, doc.name, type, fileId);
       });
 
-  });
-  
+    });
+
 }
 
-exports.updateDocumentById=(req, res)=>{
+exports.updateDocumentById = (req, res) => {
   const id = req.params.id;
-  documentDal.updateDocumentById(id ,req.body)
+  documentDal.updateDocumentById(id, req.body)
     .then(num => {
       if (num == 1) {
         res.send({
@@ -52,12 +46,12 @@ exports.updateDocumentById=(req, res)=>{
       res.status(500).send({
         message: "Error updating Document with id=" + id
       });
-    }); 
+    });
 
 
 }
 
-exports.getDocumentsByFile=(req, res)=>{
+exports.getDocumentsByFile = (req, res) => {
   const fileId = req.params.fileId;
   documentDal.getDocumentsByFile(fileId)
     .then(data => {
@@ -76,10 +70,10 @@ exports.getDocumentsByFile=(req, res)=>{
     });
 }
 
-exports.getDocumentById=(req, res)=>{
+exports.getDocumentById = (req, res) => {
   const id = req.params.id;
   documentDal.getDocumentById(id)
- 
+
     .then(data => {
       if (data) {
         res.send(data);
@@ -98,11 +92,11 @@ exports.getDocumentById=(req, res)=>{
 }
 
 
-exports.deleteDocumentById=async(req, res)=>{
+exports.deleteDocumentById = async (req, res) => {
   const id = req.params.id;
-  const document=await documentDal.getDocumentById(id)
+  const document = await documentDal.getDocumentById(id)
   documentDal.deleteDocumentById(id)
-   
+
     .then(num => {
       if (num == 1) {
         deleteDocument(document);

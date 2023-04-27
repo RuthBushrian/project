@@ -16,6 +16,9 @@ dashRouter.route("/fake/:officerId")
 dashRouter.route("/check/:officerId")
     .get(dashCntrl.getUnderCheckFiles)
 
+dashRouter.route("/checked/:officerId")
+    .get(dashCntrl.getCheckedFiles)
+
 dashRouter.route("/:num/:officerId")
     .get(dashCntrl.getLastFiles)
 

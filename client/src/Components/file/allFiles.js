@@ -12,15 +12,17 @@ import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { MultiSelect } from 'primereact/multiselect';
 import { Dropdown } from 'primereact/dropdown';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { Toast } from 'primereact/toast';
+import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 
 function AllFiles(props) 
 {    
 
-    const { data, loading, error, refetch } = Post("http://localhost:4321/file/getfiles");
+    const { data, loading, error, refetch } = Post("file/getfiles");
     const [files, setFiles]=  useState([]);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [globalFilter, setGlobalFilter] = useState(null);
-    const [statuses] = useState(["נבדק עי הפקיד", "בבדיקה עי הפקיד", "נסגר"]);
+    const [statuses] = useState(['נבדק על ידי הפקיד', 'בבדיקה על ידי הפקיד', ,'נסגר']);
     const [filters, setFilters] = useState({
         IDnumberOfApplicant: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         ApplicationSubmissionDate: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -38,6 +40,7 @@ function AllFiles(props)
                     return i;
                 }
                 ))
+            setFiles(data)
     },[data])
 
     const navigate = useNavigate();
@@ -54,7 +57,7 @@ function AllFiles(props)
     const ConfirmDeleteSelected = async (selectedFiles) => {
         console.log(selectedFiles);
         const idSelectedFiles = selectedFiles.map(file => file.idfile)
-        await Delete('http://localhost:4321/file', {"filesToDelete":idSelectedFiles})
+        await Delete('file', {"filesToDelete":idSelectedFiles})
     }
 
     const exportCSV = () => {
@@ -62,25 +65,50 @@ function AllFiles(props)
     };
 
     const rightToolbarTemplate = () => {
-        return <Button label="Export" icon="pi pi-upload" onClick={exportCSV} />;
+        return <Button className="w-10rem mx-auto" label=" יצא" icon="pi pi-upload" onClick={exportCSV} />;
     };
 
-    const leftToolbarTemplate = (selectedFiles, refetch,navigate) => {
+    
+
+    const LeftToolbarTemplate = (selectedFiles, refetch,navigate) => {
+
+
+        const accept = async() => {
+            await ConfirmDeleteSelected(selectedFiles);
+            refetch()
+        };
+
+   
+    
+        const reject = () => {
+        };
+       
+
+        const confirm = (event) => {
+            confirmPopup({
+                target: event.currentTarget,
+                message: '?האם ברצונך למחוק את התיקים שנבחרו',
+                icon: 'pi pi-info-circle',
+                acceptClassName: 'p-button-danger',
+                accept,
+                reject,
+                acceptLabel:'כן',
+                rejectLabel:'לא'
+            });
+        };
         return (
             <div className="flex flex-wrap align-items-center justify-content-between gap-2" >
-                <Button label="New " icon="pi pi-plus" severity="success" onClick= {() => 
+                <Button   className="w-10rem mx-auto" label="תיק חדש " icon="pi pi-plus" severity="success" onClick= {() => 
                     {
                         openNew (navigate)
                     }
+                    
                 } />
-                &nbsp;
-                <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={async () => 
-                    {
-                        await ConfirmDeleteSelected(selectedFiles);
-                        refetch()
-                    }
-                } />
+                &nbsp; 
+                <ConfirmPopup />
+                <Button label=" מחק " className="w-10rem mx-auto" icon="pi pi-trash" severity="danger" onClick={confirm} />
             </div>
+            
         );
     }
 
@@ -137,11 +165,18 @@ function AllFiles(props)
         );
     };
 
+    const EnterFile = (event) =>
+    {
+        navigate(`/OpenFile`,  {state: {file:event.data}});
+    }
+
+
+
         return (
             <div>
-                <Toolbar className="mb-4"  right={rightToolbarTemplate} left={leftToolbarTemplate(selectedFiles, refetch, navigate)}></Toolbar>
-                <DataTable ref={dt} onRowClick={(e)=>{alert(`enter to page of file ${e.data}`)}} value={files} selection={selectedFiles} 
-                onSelectionChange={(e) =>{setSelectedFiles(e.value)}} filters={filters} 
+                <Toolbar className="mb-4"  right={rightToolbarTemplate} left={LeftToolbarTemplate(selectedFiles, refetch, navigate)}></Toolbar>
+                <DataTable ref={dt} /*onRowClick=}*/ value={files} selection={selectedFiles} 
+                onRowDoubleClick={EnterFile} onSelectionChange={(e) =>{setSelectedFiles(e.value)}} filters={filters} 
                 filterDisplay="row" globalFilterFields={['IDnumberOfApplicant','status.name', 'ApplicationSubmissionDate']}  
                 emptyMessage="No files found." selectionMode={'checkbox'}
                 dataKey="idfile" className="text-right" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
@@ -153,7 +188,7 @@ function AllFiles(props)
                     <Column className="text-right" field="IDnumberOfApplicant" filter filterPlaceholder="חיפוש" style={{ minWidth: '12rem' }} header= 'ת"ז מגיש הבקשה' sortable ></Column>
                     <Column className="text-right" field="ApplicationSubmissionDate" body={dateBody} filter filterPlaceholder="חיפוש" style={{ minWidth: '12rem' }} header="תאריך פתיחת הבקשה" sortable></Column>
                     <Column className="text-right" field='status.name' filter filterElement={statusFilter} style={{ minWidth: '12rem' }} header="סטאטוס" sortable showFilterMenu={false}></Column>
-                    <Column className="text-right" field="result" body={ResultBody} style={{ minWidth: '3rem' }} header="תוצאה"filter filterElement={resultFilter} showFilterMenu={false}/>
+                    <Column className="text-right" field="result" body={ResultBody} style={{ minWidth: '3rem' }} header="תוצאה"filter filterElement={resultFilter} showFilterMenu={false} sortable/>
                 </DataTable> {/*   */}
             </div>
         );

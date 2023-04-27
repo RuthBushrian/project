@@ -6,7 +6,7 @@ const officerRouter = express.Router();
 
 
 officerRouter.route("/:id")
-    .get(officerCntrl.getOfficerByID)
+    .get(officerCntrl.getOfficerByIDNumber)
     .put(officerCntrl.updateOfficer);
 
 officerRouter.route("/:id/:password")

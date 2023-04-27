@@ -8,6 +8,7 @@ const dashRouter= require('./routes/dashboard');
 const managerRouter = require('./routes/manager');
 const stageRouter= require('./routes/stage')
 const document_resultRouter= require('./routes/document_result')
+const path = require('path')
 
 const a= require('./routes/a')
 
@@ -49,6 +50,7 @@ app.all('*', (req, res) => {
         res.type('txt').send('404 Not Found')
     }
 })
+app.use(express.static(path.join('a', 'public')));
 
 
 

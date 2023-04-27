@@ -83,6 +83,16 @@ exports.getUnderCheckFiles = (officerId) => {
     })
 };
 
+exports.getCheckedFiles = (officerId) => {
+
+    return File.findAll({
+        attributes: [
+            [sequelize.fn('COUNT','*'),'Checked']
+        ],
+        where:  { officerId: officerId ,statusId:2}
+    })
+};
+
 
 
 

@@ -1,168 +1,79 @@
+import React, { useEffect, useState } from 'react';
+import { Steps } from 'primereact/steps';
+import FileDetail from './fileDetails';
 import UploadDocuments from './uploadDocuments';
-import FileDetails from './fileDetails';
-import { Divider } from 'primereact/divider';
-import {Panel} from 'primereact/panel'
-import React, {useState, useRef } from "react";
-import { Button } from 'primereact/button';
-import { CreateFile } from '../../Hooks/files';
-import { Create } from '../../Hooks/fetchData';
-import { Dialog } from 'primereact/dialog';
+import { useLocation } from "react-router-dom"
+import ViewResults from './viewResults';
+import { Get } from '../../Hooks/fetchWithHook'
 
-const OpenFile = () => {
+export default function OpenFileWithSteps() {
+  const props = useLocation().state;
+  const [activeIndex, setActiveIndex] = useState(props && props.file.result != 2 ? 2 : 0);
+  const [enabledIndex, setEnabledIndex] = useState(props ? props.file.result != 2 ? 2 : 1 : 0);
+  const [details, setDetails] = useState({});
+  const [files, setFiles] = useState([]);
+  const { data, loading, error, refetch } = props ? Get(`file/${props.file.idfile}`) : {};
+  useEffect(() => {
+    console.log(data);
+    setDetails(data);
+  }, [data])
+  const setIndex = (newIndx) => {
+    if (enabledIndex < newIndx)
+      setEnabledIndex(newIndx);
+    setActiveIndex(newIndx);
+  }
+  const handleDetailsNext = (details) => {
+    setDetails(details);
+    setIndex(1);
+  };
 
+  const handleDocumentsNext = (files) => {
+    setFiles(files);
+    setIndex(2);
+  };
 
-    // const toast = useRef(null);
-    // const [items, setItems] = useState([]);
+  const handleReset = () => {
+    setActiveIndex(0);
+    setEnabledIndex(0);
+    setDetails({});
+    setFiles([]);
+  };
 
-    // const show = () => {
-    //     toast.current.show({ severity: 'success', summary: 'Form Submitted', detail: formik.values.item });
-    // };
+  const status = details && details.statusId ? details.statusId : 0;
 
-    // const search = (event) => {
-    //     setItems([...Array(10).keys()].map((item) => event.query + '-' + item));
-    // };
+  const steps = [
+    {
+      label: 'פרטים',
+      component: <FileDetail onNext={handleDetailsNext} details={details} status={status} />
+    },
+    {
+      label: 'מסמכים',
+      disabled: enabledIndex < 1,
+      component: <UploadDocuments onNext={handleDocumentsNext} details={details} onReset={handleReset} status={status} />,
+    },
+    {
+      label: 'תוצאות',
+      disabled: enabledIndex < 2,
+      component: <ViewResults details={details} files={files} refetch={refetch} status={status} />,
+    },
+  ];
 
-    // const formik = useFormik({
-    //     initialValues: {
-    //         item: ''
-    //     },
-    //     validate: (data) => {
-    //         let errors = {};
+  const renderStepContent = () => {
+    const currentStep = steps[activeIndex];
+    return currentStep.component;
+  };
 
-    //         if (!data.item) {
-    //             errors.item = 'Value is required.';
-    //         }
+  const handleStepSelect = (index) => {
+    setActiveIndex(index.index);
+  };
 
-    //         return errors;
-    //     },
-    //     onSubmit: (data) => {
-    //         data.item && show(data);
-    //         formik.resetForm();
-    //     }
-    // });
-
-    // const isFormFieldInvalid = (name) => !!(formik.touched[name] && formik.errors[name]);
-
-    // const getFormErrorMessage = (name) => {
-    //     return isFormFieldInvalid(name) ? <small className="p-error">{formik.errors[name]}</small> : <small className="p-error">&nbsp;</small>;
-    // };
-
-    // return (
-    //     <div className="card flex justify-content-center">
-    //         <form onSubmit={formik.handleSubmit} className="flex flex-column gap-2">
-    //             <label htmlFor="ac_item">Value</label>
-    //             <Toast ref={toast} />
-    //             <AutoComplete
-    //                 inputId="ac_item"
-    //                 name="item"
-    //                 value={formik.values.item}
-    //                 suggestions={items}
-    //                 completeMethod={search}
-    //                 className={classNames({ 'p-invalid': isFormFieldInvalid('item') })}
-    //                 onChange={(e) => {
-    //                     formik.setFieldValue('item', e.value);
-    //                 }}
-    //             />
-    //             {getFormErrorMessage('item')}
-               
-    //         </form>
-    //     </div>
-    // )
-    const [visible, setVisible] = useState(false);
-    const footerContent = (
-        <div style={{textAlign:"center"}}>
-            <Button label="אישור"  onClick={() => setVisible(false)} className="p-button-text" />
-        </div>
-    );
-    
-
-return(
-<>
-    <div className="card flex justify-content-center">
-        <div className="p-mr-2 p-col-6">
-            <Panel header="פרטי התיק">
-                <FileDetails />
-            </Panel>
-        </div>
-        
-        <Divider layout="vertical" />
-
-        <div className="p-d-flex p-flex-row-reverse">
-            <Panel header="העלאת מסמכים">
-                <UploadDocuments />
-            </Panel>
-        </div>
-
-        
-    </div> 
-    <div className="card flex justify-content-center">
-            <Button label="לפתיחת תיק" icon="pi pi-external-link" onClick={() => 
-                
-                {
-                    const a= {
-                        "IDnumberOfApplicant": document.getElementById("id").value,
-                        "ApplicationSubmissionDate":document.getElementById("date").value ,
-                        "name": document.getElementById("name").value,
-                        "remarks": document.getElementById("remarks").value,
-                        "statusId":1
-                    };
-                    console.log(document.getElementById("name").value);
-                    Create('http://localhost:4321/file', a);
-                    setVisible(true)
-                }
-                } />
-            <Dialog header="😊 התיק נפתח בהצלחה" visible={visible} style={{ width: '350px', textAlign:"center"}} onHide={() => setVisible(false)} footer={footerContent} >
-                <p  style={{textAlign:"center"}}>
-                    שם : {document.getElementById("name")!=null?document.getElementById("name").value==''?"לא הוכנס שם":document.getElementById("name").value:"   "} 
-                </p>
-                <p   style={{textAlign:"center"}}>
-                    הערות : {document.getElementById("remarks")!=null?document.getElementById("remarks").value==''?"לא הוכנסו הערות":document.getElementById("remarks").value:"   "} 
-                </p>
-            </Dialog>
-        </div>
-        </>
-    )
+  return (
+    <>
+      {console.log(props)}
+      <Steps model={steps} activeIndex={activeIndex} onSelect={handleStepSelect} readOnly={false} />
+      <div style={{ margin: '1% 1% 1% 1%' }}>
+        {renderStepContent()}
+      </div>
+    </>
+  );
 }
-export default OpenFile;
-
-// const OpenFile = () => {
-//     return (<div className="card flex justify-content-center">
-    
-//         <Splitter style={{ margin:'100px' }}>
-        
-//             <SplitterPanel className="flex align-items-center justify-content-center" size={25} minSize={10}>
-//               <div className="p-mr-2 p-col-6">  <FileDetails /> </div>
-//             </SplitterPanel>
-       
-        
-//             <SplitterPanel className="flex align-items-center justify-content-center" size={75}>
-//                <div className="p-mr-2 p-col-6"> <UploadDocuments /></div>
-//             </SplitterPanel>
-      
-//     </Splitter> 
-//      </div>
-//       );
-// };
-
-
-
-
-
-// const OpenFile = () => {
-//     return (<div className="card flex justify-content-center">
-    
-//         <Splitter style={{ margin:'100px' }}>
-        
-//             <SplitterPanel className="flex align-items-center justify-content-center" size={25} minSize={10}>
-//               <div className="p-mr-2 p-col-6">  <FileDetails /> </div>
-//             </SplitterPanel>
-       
-        
-//             <SplitterPanel className="flex align-items-center justify-content-center" size={75}>
-//                <div className="p-mr-2 p-col-6"> <UploadDocuments /></div>
-//             </SplitterPanel>
-      
-//     </Splitter> 
-//      </div>
-//       );
-// }; 

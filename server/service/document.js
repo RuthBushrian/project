@@ -7,6 +7,7 @@ exports.uploadDocument=async(base64String, name, type, fileId)=>
   
   const document=`data:${type};base64,`.concat(base64String);
 
+  console.log(`${process.env.PATH_FILE}${fileId}//`);
 
     await base64toFile(base64String, 
       {

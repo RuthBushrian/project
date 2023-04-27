@@ -3,10 +3,10 @@ import {Get} from '../../Hooks/fetchWithHook';
 
 
 
-function Active()
+function Active(props)
 {
   
-    const {data, loading, error, refetch } = Get("http://localhost:4321/dash/active/7");
+    const {data, loading, error, refetch } = Get(`dash/active/${props.id}`);
     
     if (loading) 
     {
@@ -18,7 +18,7 @@ function Active()
 
     return (
         <>
-        <span style={{textAlign:"center", fontSize:"30px",borderColor:"black","borderStyle":"double",backgroundColor:"white",display: "block",width: "150px",height:" 120px"}}>active: {data[0].active}</span>
+        <span>{data[0].active}</span>
         </>
     )
 }

@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, {useContext, useState, useEffect } from 'react';
 import { Chart } from 'primereact/chart';
-import {GetGrafOfFiles} from '../../Hooks/dashboard'
- 
+import { Get } from '../../Hooks/fetchWithHook';
+import UserContext from "../user/UserContext";
+
 function Graf()
 {
-const [chartData, setChartData] = useState({});
-const [chartOptions, setChartOptions] = useState({});
-const {data, loading, error, refetch} = GetGrafOfFiles();
+    const user = useContext(UserContext);
+    const [chartData, setChartData] = useState({});
+    const [chartOptions, setChartOptions] = useState({});
+    const {data, loading, error, refetch} = Get(`dash/${user.idofficer}`);
 
 useEffect(() => {
     const years=[];
@@ -14,6 +16,7 @@ useEffect(() => {
     const greens=[];
     if(data)
     {
+        console.log((data));
         console.log("not loading");
         data.forEach(element => {
             years.push(element.year)
@@ -46,18 +49,22 @@ else{
                 label: '0',
                 data: reds,
                 fill: false,
-                borderColor: documentStyle.getPropertyValue('--green-500'),
+                backgroundColor: '#2f4860',
+                borderColor: '#2f4860',
                 tension: 0.4
             },
             {
                 label: '1',
                 data: greens,
                 fill: false,
-                borderColor: documentStyle.getPropertyValue('--red-500'),
+                backgroundColor: '#00bb7e',
+                borderColor: '#00bb7e',
                 tension: 0.4
             }
         ]
     };
+
+
     const options = {
         maintainAspectRatio: false,
         aspectRatio: 0.6,
@@ -91,9 +98,10 @@ else{
     setChartData(data1);
     setChartOptions(options);
 },[data]);
+{/* <Chart  options={lineOptions} /> */}
 
 return(
-    <div className="card"style={{width:"70%",height:"15%"}}>
+    <div className="card">
     <Chart type="line" data={chartData} options={chartOptions} />
     </div>
 )

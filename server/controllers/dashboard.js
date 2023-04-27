@@ -43,36 +43,51 @@ exports.getLastFiles = (req, res) => {
         });
         })
     
-        };
+    };
 
 
-        exports.getFakeFiles = (req, res) => {
+    exports.getFakeFiles = (req, res) => {
 
-            dashDal.getFakeFiles(parseInt(req.params.officerId))
-            .then(data => {
-                res.send(data);
-                })
-            .catch(err => {
-            res.status(500).send({
-                message:
-                err.message || "Some error occurred while retrieving data num of fake files."
-            });
+        dashDal.getFakeFiles(parseInt(req.params.officerId))
+        .then(data => {
+            res.send(data);
             })
-        
-            };
+        .catch(err => {
+        res.status(500).send({
+            message:
+            err.message || "Some error occurred while retrieving data num of fake files."
+        });
+        })
+    
+    };
 
 
-            exports.getUnderCheckFiles = (req, res) => {
+    exports.getUnderCheckFiles = (req, res) => {
 
-                dashDal.getUnderCheckFiles(parseInt(req.params.officerId))
-                .then(data => {
-                    res.send(data);
-                    })
-                .catch(err => {
-                res.status(500).send({
-                    message:
-                    err.message || "Some error occurred while retrieving data num of under check files."
-                });
-                })
-            
-                };
+        dashDal.getUnderCheckFiles(parseInt(req.params.officerId))
+        .then(data => {
+            res.send(data);
+            })
+        .catch(err => {
+        res.status(500).send({
+            message:
+            err.message || "Some error occurred while retrieving data num of under check files."
+        });
+        })
+    
+    };
+
+    exports.getCheckedFiles = (req, res) => {
+
+        dashDal.getCheckedFiles(parseInt(req.params.officerId))
+        .then(data => {
+            res.send(data);
+            })
+        .catch(err => {
+        res.status(500).send({
+            message:
+            err.message || "Some error occurred while retrieving data num of checked files."
+        });
+        })
+    
+    };

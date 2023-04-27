@@ -3,11 +3,11 @@ import {Get} from '../../Hooks/fetchWithHook';
 
 
 
-function Check()
+function Check(props)
 {
     
 
-    const {data, loading, error, refetch } = Get("http://localhost:4321/dash/check/7");
+    const {data, loading, error, refetch } = Get(`dash/check/${props.id}`);
     
     if (loading) 
     {
@@ -20,7 +20,7 @@ function Check()
 
     return (
         <>
-       <span style={{textAlign:"center", fontSize:"30px",borderColor:"black","border-style":"double",backgroundColor:"white",display: "block",width: "150px",height:" 120px"}}>check: {data[0].UnderCheck}</span>
+       <span>{data[0].UnderCheck}</span>
         </>
     )
 }

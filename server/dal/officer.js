@@ -5,10 +5,10 @@ const Stage=db.stages_of_progress_of_files;
 const sequelize= require('sequelize');
 
 
-exports.getOfficerByID=(id)=>{
+exports.getOfficerByIDNumber=(id)=>{
 
     console.log(db);
-    return  Officer.findByPk(id);
+    return  Officer.findOne({idNumber:id});
 
 };
 

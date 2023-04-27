@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { URL } from '../Constant';
 
  const Delete= async(url, body={})=>
 {
@@ -25,4 +26,30 @@ import axios from 'axios';
 
 }
 
-export {Delete, Create}
+
+const Update= async(url, objToUpdate)=>
+{
+  try{
+    const res= await axios.put(`${URL}${url}`, objToUpdate);
+    console.log(res);
+    return res.data;
+  }
+  catch(err){
+  console.error(`error ${err}`);
+  }
+
+}
+ const Get = async(url)=>
+{
+  try{
+    const res= await axios.get(`${URL}${url}`);
+    return res;
+  }
+  catch(err){
+  console.error(`error ${err}`);
+  }
+
+}
+
+
+export {Delete, Create, Update, Get}
