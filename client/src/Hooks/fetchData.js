@@ -5,7 +5,7 @@ import { URL } from '../Constant';
 {
   try{
     console.log(body);
-    const res= await axios.delete(url, {data:body});
+    const res= await axios.delete(URL+url, {data:body});
   }
   catch(err){
   console.error(`error ${err}`);
@@ -16,7 +16,7 @@ import { URL } from '../Constant';
  const Create= async(url, filesToCreate)=>
 {
   try{
-    const res= await axios.post(url, filesToCreate);
+    const res= await axios.post(URL+url, filesToCreate);
     console.log(res);
     return res.data;
   }

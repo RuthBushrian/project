@@ -10,6 +10,7 @@ import Dashboard from './Components/dashboard';
 import Setting from './Components/setting';
 import UserProvider from "./Components/user/UserProvider";
 import { useEffect, useState } from 'react'
+import EmailLink from './Components/EmailLink';
 
 function App() {
 
@@ -51,6 +52,7 @@ function App() {
           <Route exact path='/Dashboard' element={< Dashboard />}></Route>
           <Route exact path='/Setting' element={< Setting />}></Route>
           <Route exact path='/Home' element={< Home />}></Route>
+          <Route exact path='/Concat' element={< EmailLink />}></Route>
 
         </Routes></>}
 

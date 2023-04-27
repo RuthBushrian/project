@@ -6,20 +6,13 @@ import { Password } from 'primereact/password';
 import { Dialog } from 'primereact/dialog';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
-import { Get ,Update} from '../Hooks/fetchData.js';
+import { Update} from '../Hooks/fetchData.js';
+import { Get } from '../Hooks/fetchWithHook'
 import UserContext from "./user/UserContext";
 import './file/formDemo.css';
 
 export default function Setting() {
-    const importData=async()=>
-    {
-        const {data, loading, error , refetch}=await Get(`officer/${user.idofficer}`);
-        if(loading)
-        {
-            return "loading"
-        }
-        return data
-    }
+
     const user = useContext(UserContext);
     const [txtvi,setTxtvi]=useState(false);
     const [value, setValue] = useState('');
@@ -27,11 +20,12 @@ export default function Setting() {
     const [formData, setFormData] = useState({});
     const [txt,setTxt]=useState('');
     const[aPass,setAPass]=useState(false)
+    // const {data:dataOfficer, loading: l, error:e , refetch:r}= Get(`officer/${user.idofficer}`);
     const check=async()=>
     {
         setTxtvi(true);
         setShowMessage(false)
-        const {data, loading, error , refetch}=await Get(`officer/${user.idofficer}`);
+        const {data, loading, error , refetch}= Get(`officer/${user.idofficer}`);
         if(loading)
         {
 
@@ -60,14 +54,23 @@ export default function Setting() {
 
     }
 
+
+
     const formik = useFormik({
+        // initialValues: {
+        //     name: dataOfficer ? dataOfficer.name: '',
+        //     email: dataOfficer ? dataOfficer.mail: '',
+        //     password: '',
+        //     aPass:''
+        // },
+        // enableReinitialize:true,
+
         initialValues: {
             name: '',
             email: '',
-            password:'',
+            password: '',
             aPass:''
         },
-        enableReinitialize:true,
 
         validateOnMount:true,
         validate: (data) => {

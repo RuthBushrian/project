@@ -5,6 +5,8 @@ import UserContext from "./user/UserContext";
 
 
 export default function Menu() {
+
+
     const user = useContext(UserContext);
     console.log(user);
     const navigate = useNavigate();
@@ -20,7 +22,10 @@ export default function Menu() {
     },
         { label: '  הגדרות ', icon: 'pi pi-fw pi-cog'
         ,command:()=>{navigate("/Setting")}
-    }
+    },
+    { label: '  צור קשר ', icon: 'pi pi-send'
+    ,command:()=>{navigate("/Concat")}
+}
     ];
     const items1 = [
         {label: user.name, icon: 'pi pi-user'

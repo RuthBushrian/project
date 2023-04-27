@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { Button } from 'primereact/button';
 import { Create, Update } from '../../Hooks/fetchData'
 import { FileUpload } from 'primereact/fileupload';
@@ -7,8 +7,11 @@ import { Tag } from 'primereact/tag';
 import { URL } from '../../Constant';
 import './formDemo.css'
 import SubmmitedDialog from '../submmitedDialog';
+import UserContext from "../user/UserContext";
+
 
 export default function UploadDocuments(props) {
+  const user = useContext(UserContext);
 
   const [formData, setFormData] = useState(props.details);
   const isUpdate = props.status > 0;
@@ -83,9 +86,10 @@ export default function UploadDocuments(props) {
     const fileToCreate = {
       ...formData,
       "statusId": 1,
-      "documents": selectedFiles
+      "documents": selectedFiles,
+      "officerId":user.idofficer
     };
-    const res = await Create(`${URL}file`, fileToCreate);
+    const res = await Create(`file`, fileToCreate);
     setFormData(res.body);
     console.log(formData);
     setVisible(true);
@@ -141,7 +145,7 @@ export default function UploadDocuments(props) {
         onClick={()=>{
           isUpdate? addDocuments():createFile()}}/>
       {/* {selectedFiles.length==0 && <small>יש להעלות קבצים</small>} */}
-      <button onClick={()=>console.log(selectedFiles)}></button>
+      {/* <button onClick={()=>console.log(selectedFiles)}></button> */}
     </div>
   </>);
 }
