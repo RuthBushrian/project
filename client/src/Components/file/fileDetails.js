@@ -114,7 +114,7 @@ export default function FileDetail(props){
         <div className="card">
             <form className="p-fluid">
                 <h3 style={{textAlign: 'center'}}>פרטי התיק</h3>
-                {details.idfile &&
+                {status>0 &&
                 <div className="field">
                     <span className="p-float-label">
                         <InputText id="idFile" name="idFile" value={details.idfile} 
@@ -151,7 +151,7 @@ export default function FileDetail(props){
                     {getFormErrorMessage('ApplicationSubmissionDate')}
                 </div>
 
-                {details['status.name'] &&
+                { status>0 &&
                 <div className="field">
                     <span className="p-float-label">
                         <InputText id="status" name="status" value={details['status.name']} disabled={true} />

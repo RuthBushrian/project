@@ -11,7 +11,6 @@ const ViewResults = (props) => {
     const closeFile = async() => {
         setVisible(false);
         await Update(`file/${props.details.idfile}`, { "statusId": 3 })
-        // CloseFileByOfficer({"statusId":3})
         props.refetch();
     }
     const sendToManager = () => {
@@ -21,7 +20,6 @@ const ViewResults = (props) => {
     }
     const [visible, setVisible] = useState(false);
     const [visible2, setVisible2] = useState(false);
-    console.log(props.details);
 
     const footerContent = (
         <div>
@@ -44,7 +42,11 @@ const ViewResults = (props) => {
                         <div class="col-12">
                             {props.details && <>
                                 <div class="flex align-items-center flex-wrap card-container green-container p-h-icon-right" >
-                                    <i className="pi pi-check-circle" style={{ fontSize: '5rem', color: 'var(--green-500)' }}></i>
+                                    {props.details.result==1?
+                                    <i className="pi pi-check-circle" style={{ fontSize: '5rem', color: 'var(--green-500)' }}></i>:
+                                    <i className='pi false-icon pi-times-circle' style={{fontSize: '5rem', color:"red"}}></i> 
+                                    }
+                                    
                                     &nbsp;&nbsp;&nbsp;
 
                                     <h2 >תיק מספר: {props.details.idfile}  </h2>
@@ -53,7 +55,7 @@ const ViewResults = (props) => {
                                 <p>ת"ז מגיש הבקשה: {props.details.IDnumberOfApplicant}</p>
                                 <p>שם מגיש הבקשה: {props.details.name}</p>
                                 {/* <p>כמות המסמכים שנשלחו לבדיקה: 3</p>
-                <p>ממוצא אחוז זיוף המסמכים: 3%</p> */}
+                                <p>ממוצא אחוז זיוף המסמכים: 3%</p> */}
                                 <p>סטטוס: {props.details['status.name']}</p>
                             </>}
                             <div className="flex align-items-stretch flex-wrap card-container blue-container">

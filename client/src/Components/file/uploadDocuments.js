@@ -11,7 +11,7 @@ import SubmmitedDialog from '../submmitedDialog';
 export default function UploadDocuments(props) {
 
   const [formData, setFormData] = useState(props.details);
-  const isUpdate = !!props.details.idfile;
+  const isUpdate = props.status > 0;
   const [visible, setVisible] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
 
