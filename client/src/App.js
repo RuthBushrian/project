@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Home from './Components/home';
+import Home from './Components/Home';
 import OpenFile from './Components/file/openFile';
 import { File } from './Components/file/file';
 import AllFiles from './Components/file/allFiles';
@@ -25,7 +25,7 @@ function App() {
     if (!userFromLocalStorage) return;
     const parsedUser = JSON.parse(userFromLocalStorage)
     console.log({ parsedUser });
-    setUserId(parsedUser.idNumber)
+    setUserId(parsedUser.idofficer)
   }, []);
 
   // useEffect(() => {

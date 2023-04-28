@@ -14,7 +14,7 @@ exports.uploadDocument=async(base64String, name, type, fileId)=>
         filePath: `${process.env.PATH_FILE}${fileId}//`,
         fileName: name,
         types: [type],
-        fileMaxSize: 3145728
+        fileMaxSize: 1000000000
       }
     );
 

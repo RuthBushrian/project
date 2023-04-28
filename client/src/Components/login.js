@@ -25,8 +25,9 @@ const navigate = useNavigate();
     console.log("handleLogin");
     try {
     //   const response = await refetch();
-    const response= Get(`officer/${formik.values.userName}/${formik.values.password}`)  
-    props.setUserId(formik.values.userName);
+    const response= await Get(`officer/${formik.values.userName}/${formik.values.password}`)  
+    console.log(response);
+    props.setUserId(response.data.idofficer);
     navigate("/openfile")
 
     } 

@@ -7,7 +7,7 @@ import { Dialog } from 'primereact/dialog';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
 import { Update} from '../Hooks/fetchData.js';
-import { Get } from '../Hooks/fetchWithHook'
+import { Get } from '../Hooks/fetchData'
 import UserContext from "./user/UserContext";
 import './file/formDemo.css';
 
@@ -25,32 +25,25 @@ export default function Setting() {
     {
         setTxtvi(true);
         setShowMessage(false)
-        const {data, loading, error , refetch}= Get(`officer/${user.idofficer}`);
-        if(loading)
-        {
+        const data = (await Get(`officer/${user.idofficer}`)).data;
 
-        }
-        else 
+        console.log(data);
+        if(data.password.localeCompare(value)==0)
         {
-            console.log(data.password);
-            if(data.password.localeCompare(value)==0)
-            {
-                if(formData.email==data.email)
-                    formData.email=data.mail;
-                if(formData.name==data.name)
-                    formData.name=data.name;
-                if(formData.password==data.password)
-                    formData.password=data.password;
-                console.log("aaa");
-                console.log(formData);
-                    Update(`officer/${user.idofficer}`,formData);
-                console.log("vvv");
-                setTxt("הפרטים שונו");
-            }
-            else
-                setTxt("הסיסמא שגויה נסה שנית")
+            if(formData.email==data.email)
+                formData.email=data.mail;
+            if(formData.name==data.name)
+                formData.name=data.name;
+            if(formData.password==data.password)
+                formData.password=data.password;
+            console.log("aaa");
+            console.log(formData);
+            Update(`officer/${user.idofficer}`,formData);
+            console.log("vvv");
+            setTxt("הפרטים שונו");
         }
-
+        else
+            setTxt("הסיסמא שגויה נסה שנית")
 
     }
 
@@ -92,7 +85,6 @@ export default function Setting() {
             return errors;
         },
         onSubmit: (data) => {
-            console.log("aaa");
             setFormData(data);
             setShowMessage(true);
             formik.resetForm();
@@ -104,7 +96,9 @@ export default function Setting() {
         return isFormFieldValid(name) && <small className="p-error">{formik.errors[name]}</small>;
     };
 
-    const dialogFooter = <div className="flex justify-content-center"><Button label="אישור" className="p-button-text" autoFocus onClick={() => check(value)} /></div>;
+    const dialogFooter = <div className="flex justify-content-center">
+        <Button label="אישור" className="p-button-text" autoFocus 
+        onClick={() => check(value)} /></div>;
     const dialogFooter1 = <div className="flex justify-content-center"><Button label="אישור" className="p-button-text" autoFocus onClick={() => setTxtvi(false)} /></div>;
     const passwordHeader = <h6>הכנס סיסמא</h6>;
     const passwordFooter = (

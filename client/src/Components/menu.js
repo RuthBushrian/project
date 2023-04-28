@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import { TabMenu } from 'primereact/tabmenu';
 import {useNavigate} from "react-router-dom"
 import UserContext from "./user/UserContext";
+import { Get } from '../Hooks/fetchData';
 
 
 export default function Menu() {
@@ -24,7 +25,11 @@ export default function Menu() {
         ,command:()=>{navigate("/Setting")}
     },
     { label: '  צור קשר ', icon: 'pi pi-send'
-    ,command:()=>{navigate("/Concat")}
+    ,command:async()=>
+    {
+        const manager = (await Get(`manager/${user.idofficer}`)).data
+        window.open(`https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=${manager.mail}`);
+    }
 }
     ];
     const items1 = [

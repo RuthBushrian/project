@@ -6,7 +6,7 @@ const officerRouter = express.Router();
 
 
 officerRouter.route("/:id")
-    .get(officerCntrl.getOfficerByIDNumber)
+    .get(officerCntrl.getOfficerByID)
     .put(officerCntrl.updateOfficer);
 
 officerRouter.route("/:id/:password")
@@ -14,4 +14,4 @@ officerRouter.route("/:id/:password")
 
 officerRouter.route("/numOfDocuments/:idofficer")  
     .get(officerCntrl.getNumOfDocuments )
-module.exports = officerRouter;
+module.exports = officerRouter;  

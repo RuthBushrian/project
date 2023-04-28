@@ -5,7 +5,7 @@ exports.login=(req, res) =>
 {
   const id =req.params.id;
   const password= req.params.password;
-    officerDal.getOfficerByIdNumber(id)
+    officerDal.getOfficerByIDNumber(id)
     .then(data => {
         if (data) {
           console.log(data);
@@ -29,9 +29,9 @@ exports.login=(req, res) =>
     });
 }
 
-exports.getOfficerByIDNumber=(req, res)=>{
+exports.getOfficerByID=(req, res)=>{
     const id =req.params.id;
-    officerDal.getOfficerByIDNumber(id).then(data => {
+    officerDal.getOfficerById(id).then(data => {
         if (data) {
             res.send(data);
         } else {

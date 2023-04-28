@@ -11,6 +11,7 @@ const UserProvider = ({ children, userId }) => {
     useEffect(() => {
         if (userId) {
             Get(`officer/${userId}`).then(user => {
+                console.log(user);
                 setUser(user.data)
                 localStorage.setItem("user", JSON.stringify(user.data))
             }

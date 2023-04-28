@@ -5,7 +5,7 @@ exports.addDocument = (documentToAdd) => {
 
     return Document.bulkCreate(documentToAdd);
 };
-    
+       
 exports.getDocumentById=(id)=>{
     return Document.findByPk(id);
 };

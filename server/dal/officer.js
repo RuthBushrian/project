@@ -4,18 +4,17 @@ const Op = db.Sequelize.Op;
 const Stage=db.stages_of_progress_of_files;
 const sequelize= require('sequelize');
 
-
 exports.getOfficerByIDNumber=(id)=>{
 
     console.log(db);
-    return  Officer.findOne({idNumber:id});
+    return  Officer.findOne({where:{idNumber:id}});
 
 };
 
-exports.getOfficerByIdNumber= (id)=>
+exports.getOfficerById= (id)=>
 {
   console.log("getOfficerByIdNumber");
-  return  Officer.findOne({where:{idNumber:id}});
+  return  Officer.findByPk(id);
 }
 
 

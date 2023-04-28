@@ -4,7 +4,7 @@ import { Create, Update } from '../../Hooks/fetchData'
 import { FileUpload } from 'primereact/fileupload';
 import { Tooltip } from 'primereact/tooltip';
 import { Tag } from 'primereact/tag';
-import { URL } from '../../Constant';
+// import { URL } from '../../Constant';
 import './formDemo.css'
 import SubmmitedDialog from '../submmitedDialog';
 import UserContext from "../user/UserContext";
@@ -57,28 +57,24 @@ export default function UploadDocuments(props) {
   };
 
   const handleFileUpload = async (event) => {
-    //Occurs when a document is dragged
-
-    console.log(event);
-
     const curFiles = [...selectedFiles];
-
-    Array.from(event.files).forEach(async (file) => {
-      if (file.objectURL != undefined) {
+    for (let i = 0; i < event.files.length; i++) {
+        const file = event.files[i];
+        if (file.objectURL == undefined)
+            file.objectURL = URL.createObjectURL(file);
         const reader = new FileReader();
         reader.onload = (event) => {
-          curFiles.push({
-            document: event.target.result,
-            name: file.name.slice(0, file.name.lastIndexOf('.')), objectURL: file.objectURL
-          })
+            curFiles.push({
+                document: event.target.result,
+                name: file.name.slice(0, file.name.lastIndexOf('.')),
+                objectURL: file.objectURL
+            })
         }
         reader.readAsDataURL(file);
-      }
-    });
+    }
 
     setSelectedFiles(curFiles);
-  }
-
+}
   const chooseOptions = { icon: 'pi pi-fw pi-images', iconOnly: true, className: 'custom-choose-btn p-button-rounded p-button-outlined' };
   const uploadOptions = { icon: 'pi pi-fw pi-cloud-upload', iconOnly: true, className: 'custom-upload-btn p-button-success p-button-rounded p-button-outlined' };
   const cancelOptions = { icon: 'pi pi-fw pi-times', iconOnly: true, className: 'custom-cancel-btn p-button-danger p-button-rounded p-button-outlined' };
@@ -98,7 +94,7 @@ export default function UploadDocuments(props) {
 
   const addDocuments = async () => {
     const docs = selectedFiles;
-    const res = await Create(`${URL}document/${props.details.idfile}`, {documents:selectedFiles});
+    const res = await Create(`$document/${props.details.idfile}`, {documents:selectedFiles});
     // setFormData(res.body);
     // console.log(formData);
     setVisible(true);
