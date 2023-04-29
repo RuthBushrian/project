@@ -3,6 +3,7 @@ import {URL} from '../Constant'
 
 const Post = (url, body={}) => {
 
+    console.log(body);
     const [{ data, loading, error }, refetch]= useAxios(
         {
             url:URL + url,

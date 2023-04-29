@@ -102,7 +102,7 @@ else{
 
 return(
     <div className="card">
-    <Chart type="line" data={chartData} options={chartOptions} />
+    <Chart type="line" data={chartData} options={chartOptions}/>
     </div>
 )
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toolbar } from 'primereact/toolbar';
@@ -14,11 +14,14 @@ import { Dropdown } from 'primereact/dropdown';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Toast } from 'primereact/toast';
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
+import UserContext from "../user/UserContext";
 
 function AllFiles(props) 
 {    
+    const officer = useContext(UserContext);
 
-    const { data, loading, error, refetch } = Post("file/getfiles");
+
+    const { data, loading, error, refetch } = Post(`file/getfiles`, {officerId:officer.idofficer});
     const [files, setFiles]=  useState([]);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [globalFilter, setGlobalFilter] = useState(null);

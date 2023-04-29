@@ -32,19 +32,20 @@ export default function Menu() {
     }
 }
     ];
-    const items1 = [
-        {label: user.name, icon: 'pi pi-user'
-    }]
+
     return (
-<div class="card"style={{marginBottom: "25px"}}>
-    <div class="flex card-container indigo-container">
-        <div class="flex-1 "> 
+<div style={{display: 'flex'}}>
+ 
+  <div className="card" style={{marginBottom: "25px", flex: 1}}>
+    <div className="flex card-container indigo-container">
+      <div className="flex-1 ">
         <TabMenu model={items}/>
-        </div>
-        <div class="flex-1 ">
-            <TabMenu model={items1} dir='ltr'defaultChecked></TabMenu>
-        </div>
+      </div>
     </div>
+  </div>
+  <div style={{padding: '10px'}}>
+    <h3>{user.name}</h3>
+  </div>
 </div>
 
     )
