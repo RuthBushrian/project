@@ -14,5 +14,6 @@ documentRouter.route("/:id")
 
 documentRouter.route("/file/:fileId")
     .get(documentCntrl.getDocumentsByFile)
-
-module.exports = documentRouter;
+documentRouter.route("/:file/:document")
+    .get(documentCntrl.getOpenDocumentById)
+module.exports = documentRouter; 

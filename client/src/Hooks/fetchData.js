@@ -51,5 +51,22 @@ const Update= async(url, objToUpdate)=>
 
 }
 
+const FetchFileData = async (path) => {
+  try {
+debugger
+    const response = await axios.get(`${URL}document/${path}`, { responseType: 'arraybuffer' });
+    // const base64Data = btoa(
+    //   new Uint8Array(response.data).reduce(
+    //     (data, byte) => data + String.fromCharCode(byte),
+    //     ''
+    //   )
+    // );
+    console.log(response);
+    return(response);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-export {Delete, Create, Update, Get}
+
+export {Delete, Create, Update, Get,FetchFileData}

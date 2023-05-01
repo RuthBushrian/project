@@ -23,24 +23,25 @@ export default function Setting() {
     // const {data:dataOfficer, loading: l, error:e , refetch:r}= Get(`officer/${user.idofficer}`);
     const check=async()=>
     {
+        
+        
         setTxtvi(true);
         setShowMessage(false)
         const data = (await Get(`officer/${user.idofficer}`)).data;
-
-        console.log(data);
         if(data.password.localeCompare(value)==0)
         {
-            if(formData.email==data.email)
-                formData.email=data.mail;
-            if(formData.name==data.name)
+            if(formData.mail=='')
+                formData.mail=data.mail;
+            if(formData.name=='')
                 formData.name=data.name;
-            if(formData.password==data.password)
+            if(formData.password=='')
                 formData.password=data.password;
             console.log("aaa");
             console.log(formData);
             Update(`officer/${user.idofficer}`,formData);
             console.log("vvv");
             setTxt("הפרטים שונו");
+            
         }
         else
             setTxt("הסיסמא שגויה נסה שנית")
@@ -52,7 +53,7 @@ export default function Setting() {
     const formik = useFormik({
         // initialValues: {
         //     name: dataOfficer ? dataOfficer.name: '',
-        //     email: dataOfficer ? dataOfficer.mail: '',
+        //     mail: dataOfficer ? dataOfficer.mail: '',
         //     password: '',
         //     aPass:''
         // },
@@ -60,7 +61,7 @@ export default function Setting() {
 
         initialValues: {
             name: '',
-            email: '',
+            mail: '',
             password: '',
             aPass:''
         },
@@ -69,11 +70,11 @@ export default function Setting() {
         validate: (data) => {
             let errors = {};
 
-            if (!data.email) {
+            if (!data.mail) {
                 
             }
-            else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)) {
-                errors.email = 'כתובת המייל לא תקינה';
+            else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.mail)) {
+                errors.mail = 'כתובת המייל לא תקינה';
             }
 
             if(data.password!=''&& data.aPass!='')
@@ -85,7 +86,13 @@ export default function Setting() {
             return errors;
         },
         onSubmit: (data) => {
+            if(data.mail==''&&data.name==''&&data.password==''){
+                setTxt("לא שונו פרטים");
+                setTxtvi(true);
+                return;
+            }
             setFormData(data);
+          
             setShowMessage(true);
             formik.resetForm();
         }
@@ -146,10 +153,10 @@ export default function Setting() {
                         <div className="field">
                             <span className="p-float-label p-input-icon-right">
                                 <i className="pi pi-envelope" />
-                                <InputText id="email" name="email" value={formik.values.email} onChange={formik.handleChange} className={classNames({ 'p-invalid': isFormFieldValid('email') })} />
-                                <label htmlFor="email" className={classNames({ 'p-error': isFormFieldValid('email') })}>מייל</label>
+                                <InputText id="mail" name="mail" value={formik.values.mail} onChange={formik.handleChange} className={classNames({ 'p-invalid': isFormFieldValid('mail') })} />
+                                <label htmlFor="mail" className={classNames({ 'p-error': isFormFieldValid('mail') })}>מייל</label>
                             </span>
-                            {getFormErrorMessage('email')}
+                            {getFormErrorMessage('mail')}
                         </div>
                         <div className="field">
                             <span className="p-float-label">

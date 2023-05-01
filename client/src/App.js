@@ -11,7 +11,6 @@ import Setting from './Components/setting';
 import UserProvider from "./Components/user/UserProvider";
 import { useEffect, useState } from 'react'
 import EmailLink from './Components/EmailLink';
-
 function App() {
 
   const navigate = useNavigate();

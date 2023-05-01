@@ -1,6 +1,5 @@
 const base64toFile = require('node-base64-to-file');
 const {unlink}= require('node:fs/promises');
-const isBase64 = require('is-base64');
 
 exports.uploadDocument=async(base64String, name, type, fileId)=>
 {
@@ -20,6 +19,9 @@ exports.uploadDocument=async(base64String, name, type, fileId)=>
 
 };
 
+
+
+
 exports.deleteDocument=async(document)=>
 {
   
@@ -33,4 +35,18 @@ exports.deleteDocument=async(document)=>
     {
       console.error('there was an error:', error.message);
     }
+}
+
+exports.getOpenDocument=(path)=>
+{
+  
+  const fileName = '1.jpg';
+  res.sendFile(fileName, options, function (err) {
+      if (err) {
+          next(err);
+      } else {
+          console.log('Sent:', fileName);
+      }
+  });
+
 }

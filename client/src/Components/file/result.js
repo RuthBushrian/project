@@ -4,6 +4,7 @@ import { Carousel } from 'primereact/carousel';
 import { Get } from '../../Hooks/fetchWithHook';
 import doc from './doc.jpg'
 import { Avatar } from "primereact/avatar";
+import { FetchFileData } from '../../Hooks/fetchData';
 
 function Result(props) {
 
@@ -13,15 +14,41 @@ function Result(props) {
         return <p>Loading...</p>;
     }
     if (error) { return <p>Error!</p>; }
-
     const ProductTemplate = (data) => {
+        const getDocuments = async () => {
+            const x = await FetchFileData(`${props.details.idfile}/${data.name}`);
+            setFile(x);
+        }
+
+        const [file, setFile] = useState('');
+        useEffect(() => {
+            getDocuments();
+        }, [])
+
+      
+           
+          
+          
+        debugger
+        const blob = new Blob([file], { type: "image/jpeg" });
+        const blobUrlDocs = URL.createObjectURL(blob);
+        // window.open(blobUrlDocs, '_blank');
         return (
             <>
-
                 <div className="border-1 surface-border border-round m-2 text-center py-1 px-2">
                     <div className="mb-3 flex align-items-start flex-wrap card-container yellow-container justify-content-center flex-wrap card-container yellow-container">
-                        <img src={doc} ></img>
-                        {/* <p>מספר מסמך: {data.iddocument} תוצאת מסמך: {data.result}</p>  */}
+                        {file && (<iframe
+                            style={{
+                                width: "100%",
+                                height: "100vh",
+                            }}
+                            src={blobUrlDocs}
+                            type={"image/jpeg"}
+                            title="בדיקה"
+                        />
+
+                        )}
+                        <p>מספר מסמך: {data.iddocument} תוצאת מסמך: {data.result}</p>
                         <Avatar
                             label="56%"
                             className="mr-2"

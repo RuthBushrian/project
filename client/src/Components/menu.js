@@ -39,7 +39,7 @@ export default function Menu() {
   <div className="card" style={{marginBottom: "25px", flex: 1}}>
     <div className="flex card-container indigo-container">
       <div className="flex-1 ">
-        <TabMenu model={items}/>
+        <TabMenu style={{backgroundColor: 'var(--primary-900)'}} model={items} />
       </div>
     </div>
   </div>

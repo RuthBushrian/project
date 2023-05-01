@@ -122,7 +122,7 @@ export default function UploadDocuments(props) {
       <SubmmitedDialog header={header} content={content} onConfirm={() => { setVisible(false); isUpdate? onTemplateClear():props.onReset(); }}></SubmmitedDialog>}
 
 
-    <div className="flex card-container blue-container overflow-hidden" style={{ fontFamily: 'fantasy' }}>
+    <div className="flex card-container blue-container overflow-hidden" style={{ fontFamily: 'fantasy', margin:'5% 20% 0 20%' }}>
 
       <div className="flex-grow-1" >
         <Tooltip target=".custom-choose-btn" content="Choose" position="bottom" />
