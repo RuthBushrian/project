@@ -1,21 +1,21 @@
 import useAxios from 'axios-hooks'
-import {URL} from '../Constant'
+import { URL } from '../Constant'
 
-const Post = (url, body={}) => {
+const Post = (url, body = {}) => {
 
     console.log(body);
-    const [{ data, loading, error }, refetch]= useAxios(
+    const [{ data, loading, error }, refetch] = useAxios(
         {
-            url:URL + url,
-            method:'post',
-            data:body
+            url: URL + url,
+            method: 'post',
+            data: body
         }
     );
-    if(error)
+    if (error)
         console.log(error);
-   
+
     return { data, loading, error, refetch };
-  
+
 };
 //  const CloseFileByOfficer= (details) => {
 //     const [{ data, loading, error }, refetch] = useAxios(
@@ -29,14 +29,14 @@ const Post = (url, body={}) => {
 
 const Get = (url) => {
     console.log(URL + url);
-  const [{ data, loading, error }, refetch]= useAxios(URL + url);
-  if(error)
-      console.log(error);
-  return { data, loading, error, refetch };
+    const [{ data, loading, error }, refetch] = useAxios(URL + url);
+    if (error)
+        console.log(error);
+    return { data, loading, error, refetch };
 
 };
 
 
 
 
-export {Post, Get}
+export { Post, Get }

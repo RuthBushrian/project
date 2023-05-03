@@ -1,4 +1,4 @@
-import React, { useContext,useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -6,42 +6,40 @@ import { Password } from 'primereact/password';
 import { Dialog } from 'primereact/dialog';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
-import { Update} from '../Hooks/fetchData.js';
+import { Update } from '../Hooks/fetchData.js';
 import { Get } from '../Hooks/fetchData'
 import UserContext from "./user/UserContext";
 import './file/formDemo.css';
 
 export default function Setting() {
 
-    const user = useContext(UserContext);
-    const [txtvi,setTxtvi]=useState(false);
+    const { user, refetch } = useContext(UserContext);
+    const [txtvi, setTxtvi] = useState(false);
     const [value, setValue] = useState('');
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState({});
-    const [txt,setTxt]=useState('');
-    const[aPass,setAPass]=useState(false)
+    const [txt, setTxt] = useState('');
+    const [aPass, setAPass] = useState(false)
     // const {data:dataOfficer, loading: l, error:e , refetch:r}= Get(`officer/${user.idofficer}`);
-    const check=async()=>
-    {
-        
-        
+    const check = async () => {
+
+
         setTxtvi(true);
         setShowMessage(false)
         const data = (await Get(`officer/${user.idofficer}`)).data;
-        if(data.password.localeCompare(value)==0)
-        {
-            if(formData.mail=='')
-                formData.mail=data.mail;
-            if(formData.name=='')
-                formData.name=data.name;
-            if(formData.password=='')
-                formData.password=data.password;
+        if (data.password.localeCompare(value) == 0) {
+            if (formData.mail == '')
+                formData.mail = data.mail;
+            if (formData.name == '')
+                formData.name = data.name;
+            if (formData.password == '')
+                formData.password = data.password;
             console.log("aaa");
             console.log(formData);
-            Update(`officer/${user.idofficer}`,formData);
+            await Update(`officer/${user.idofficer}`, formData);
             console.log("vvv");
             setTxt("הפרטים שונו");
-            
+            refetch()
         }
         else
             setTxt("הסיסמא שגויה נסה שנית")
@@ -63,36 +61,37 @@ export default function Setting() {
             name: '',
             mail: '',
             password: '',
-            aPass:''
+            aPass: ''
         },
 
-        validateOnMount:true,
+        validateOnMount: true,
         validate: (data) => {
             let errors = {};
 
             if (!data.mail) {
-                
+
             }
             else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.mail)) {
                 errors.mail = 'כתובת המייל לא תקינה';
             }
 
-            if(data.password!=''&& data.aPass!='')
-                if(data.password.localeCompare(data.aPass)!=0)
-                    errors.aPass='הסיסמאות לא תואמות אנא נסה שנית'
+            if ((data.password != ''))
+                if (data.password.localeCompare(data.aPass) != 0)
+                    errors.aPass = 'הסיסמאות לא תואמות אנא נסה שנית'
+                
 
 
 
             return errors;
         },
         onSubmit: (data) => {
-            if(data.mail==''&&data.name==''&&data.password==''){
+            if (data.mail == '' && data.name == '' && data.password == '') {
                 setTxt("לא שונו פרטים");
                 setTxtvi(true);
                 return;
             }
             setFormData(data);
-          
+
             setShowMessage(true);
             formik.resetForm();
         }
@@ -104,8 +103,8 @@ export default function Setting() {
     };
 
     const dialogFooter = <div className="flex justify-content-center">
-        <Button label="אישור" className="p-button-text" autoFocus 
-        onClick={() => check(value)} /></div>;
+        <Button label="אישור" className="p-button-text" autoFocus
+            onClick={() => check(value)} /></div>;
     const dialogFooter1 = <div className="flex justify-content-center"><Button label="אישור" className="p-button-text" autoFocus onClick={() => setTxtvi(false)} /></div>;
     const passwordHeader = <h6>הכנס סיסמא</h6>;
     const passwordFooter = (
@@ -122,22 +121,22 @@ export default function Setting() {
     );
 
     return (
-        <div className="form-demo" style={{fontFamily:"Segoe UI"}}>
-            <Dialog visible={showMessage}  footer={dialogFooter} showHeader={false} breakpoints={{ '960px': '80vw' }} style={{ width: '30vw' }}>
+        <div className="form-demo" style={{ fontFamily: "Segoe UI" }}>
+            <Dialog visible={showMessage} footer={dialogFooter} showHeader={false} breakpoints={{ '960px': '80vw' }} style={{ width: '30vw' }}>
                 <div className="flex align-items-center flex-column pt-6 px-3">
                     <h5>הכנס סיסמא ישנה</h5>
                     <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
                         <div className="card flex justify-content-center">
                             <Password value={value} onChange={(e) => setValue(e.target.value)} feedback={false} toggleMask />
-                            
+
                         </div>
                     </p>
                 </div>
             </Dialog>
-            <Dialog visible={txtvi}  footer={dialogFooter1} showHeader={false}  style={{ width: '30vw' }}>
-                                <div style={{textAlign:"center"}}>
-                                    {txt}
-                                </div>
+            <Dialog visible={txtvi} footer={dialogFooter1} showHeader={false} style={{ width: '30vw' }}>
+                <div style={{ textAlign: "center" }}>
+                    {txt}
+                </div>
             </Dialog>
             <div className="flex justify-content-center">
                 <div className="card">
@@ -160,19 +159,19 @@ export default function Setting() {
                         </div>
                         <div className="field">
                             <span className="p-float-label">
-                                <Password id="password" name="password" value={formik.values.password} onBlur={()=>{formik.values.password!=''? setAPass(true):setAPass(false)}} onChange={formik.handleChange} toggleMask
+                                <Password id="password" name="password" value={formik.values.password} onBlur={() => { formik.values.password != '' ? setAPass(true) : setAPass(false) }} onChange={formik.handleChange} toggleMask
                                     className={classNames({ 'p-invalid': isFormFieldValid('password') })} header={passwordHeader} footer={passwordFooter} />
                                 <label htmlFor="password" className={classNames({ 'p-error': isFormFieldValid('password') })}>סיסמא</label>
                             </span>
                             {getFormErrorMessage('password')}
                         </div>
-                        
-                        
-                        {aPass==false?<><div >
-                        </div></>:<><div className="field">
+
+                        {aPass == false ? <><div >
+                        </div></> : <><div className="field">
                             <span className="p-float-label">
+                                
                                 <Password id="aPass" name="aPass" value={formik.values.aPass} feedback={false} onChange={formik.handleChange} toggleMask
-                                    className={classNames({ 'p-invalid': isFormFieldValid('aPass') })}  />
+                                    className={classNames({ 'p-invalid': isFormFieldValid('aPass') })} />
                                 <label htmlFor="aPass" className={classNames({ 'p-error': isFormFieldValid('aPass') })}>הכנס סיסמא שנית</label>
                             </span>
                             {getFormErrorMessage('aPass')}

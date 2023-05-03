@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
             fileId: { type: DataTypes.INTEGER, allowNull: false},
             name: { type: DataTypes.STRING, allowNull: false },
             result: { type: DataTypes.FLOAT, defaultValue : null },
-            languageId: { type: DataTypes.INTEGER }
+            languageId: { type: DataTypes.INTEGER },
+            docType:{type: DataTypes.STRING, allowNull: false }
         }, 
         {
             timestamps: false,

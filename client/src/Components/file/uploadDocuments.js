@@ -1,4 +1,4 @@
-import React, { useState,useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button } from 'primereact/button';
 import { Create, Update } from '../../Hooks/fetchData'
 import { FileUpload } from 'primereact/fileupload';
@@ -11,7 +11,7 @@ import UserContext from "../user/UserContext";
 
 
 export default function UploadDocuments(props) {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const [formData, setFormData] = useState(props.details);
   const isUpdate = props.status > 0;
@@ -57,34 +57,41 @@ export default function UploadDocuments(props) {
   };
 
   const handleFileUpload = async (event) => {
+    const toTtpe={"image/jpeg":"jpeg", "application/pdf":"pdf", "image/png":"png","image/gif":"gif"}
+
     const curFiles = [...selectedFiles];
+    console.log(curFiles);
     for (let i = 0; i < event.files.length; i++) {
-        const file = event.files[i];
-        if (file.objectURL == undefined)
-            file.objectURL = URL.createObjectURL(file);
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            curFiles.push({
-                document: event.target.result,
-                name: file.name.slice(0, file.name.lastIndexOf('.')),
-                objectURL: file.objectURL
-            })
-        }
-        reader.readAsDataURL(file);
+      const file = event.files[i];
+      if (file.objectURL == undefined)
+        file.objectURL = URL.createObjectURL(file);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        curFiles.push({
+          document: event.target.result,
+          type: toTtpe[file.type],
+          name: file.name.slice(0, file.name.lastIndexOf('.')),
+          objectURL: file.objectURL
+        })
+      }
+      reader.readAsDataURL(file);
     }
 
     setSelectedFiles(curFiles);
-}
+  }
   const chooseOptions = { icon: 'pi pi-fw pi-images', iconOnly: true, className: 'custom-choose-btn p-button-rounded p-button-outlined' };
   const uploadOptions = { icon: 'pi pi-fw pi-cloud-upload', iconOnly: true, className: 'custom-upload-btn p-button-success p-button-rounded p-button-outlined' };
   const cancelOptions = { icon: 'pi pi-fw pi-times', iconOnly: true, className: 'custom-cancel-btn p-button-danger p-button-rounded p-button-outlined' };
   const createFile = async () => {
+
+
     const fileToCreate = {
       ...formData,
       "statusId": 1,
       "documents": selectedFiles,
-      "officerId":user.idofficer
+      "officerId": user.idofficer
     };
+    console.log(selectedFiles);
     const res = await Create(`file`, fileToCreate);
     setFormData(res.body);
     console.log(formData);
@@ -94,35 +101,36 @@ export default function UploadDocuments(props) {
 
   const addDocuments = async () => {
     const docs = selectedFiles;
-    const res = await Create(`$document/${props.details.idfile}`, {documents:selectedFiles});
+
+    const res = await Create(`$document/${props.details.idfile}`, { documents: selectedFiles });
     // setFormData(res.body);
     // console.log(formData);
     setVisible(true);
     // formik.resetForm();
   }
 
-  const header = isUpdate?"😊 התיק נפתח בהצלחה":"😊 התיק עודכן בהצלחה"
-  const content = 
-    !isUpdate?
-    <><p>
-      מספר תיק : {formData.idfile != null ? formData.idfile : ""}
-      <br />
-      ת"ז : {formData.IDnumberOfApplicant != null ? formData.IDnumberOfApplicant : ""}
-      <br />
-      שם : {formData.name != null ? formData.name : ""}
-      <br />
-      תאריך : {formData.ApplicationSubmissionDate != null ? new Date(formData.ApplicationSubmissionDate).toLocaleDateString() : ""}
-      <br />
-      הערות : {formData.remarks != null ? formData.remarks == '' ? "לא הוכנסו הערות" : formData.remarks : "   "}
-    </p>
-    <p>התיק והמסמכים המצורפים נשלחים כעת לבדיקה ואימות, בעוד זמן קצר תוכלו לצפות בתוצאות. הבדיקה הינה חדשנית ואמינה ואחוזי ההצלחה שלה גבוהים. אולם עם זאת עלינו לציין שהיא מבוססת על בינה מלאכותית, וכמו רוב הטכנולוגיות הללו היא אינה באמינות של מאת האחוזים</p></>:
-    <p>המסמכים הועלו בהצלחה וכעת נשלחים לבדיקה</p>
+  const header = isUpdate ? "😊 התיק נפתח בהצלחה" : "😊 התיק עודכן בהצלחה"
+  const content =
+    !isUpdate ?
+      <><p>
+        מספר תיק : {formData.idfile != null ? formData.idfile : ""}
+        <br />
+        ת"ז : {formData.IDnumberOfApplicant != null ? formData.IDnumberOfApplicant : ""}
+        <br />
+        שם : {formData.name != null ? formData.name : ""}
+        <br />
+        תאריך : {formData.ApplicationSubmissionDate != null ? new Date(formData.ApplicationSubmissionDate).toLocaleDateString() : ""}
+        <br />
+        הערות : {formData.remarks != null ? formData.remarks == '' ? "לא הוכנסו הערות" : formData.remarks : "   "}
+      </p>
+        <p>התיק והמסמכים המצורפים נשלחים כעת לבדיקה ואימות, בעוד זמן קצר תוכלו לצפות בתוצאות. הבדיקה הינה חדשנית ואמינה ואחוזי ההצלחה שלה גבוהים. אולם עם זאת עלינו לציין שהיא מבוססת על בינה מלאכותית, וכמו רוב הטכנולוגיות הללו היא אינה באמינות של מאת האחוזים</p></> :
+      <p>המסמכים הועלו בהצלחה וכעת נשלחים לבדיקה</p>
   return (<>
     {visible &&
-      <SubmmitedDialog header={header} content={content} onConfirm={() => { setVisible(false); isUpdate? onTemplateClear():props.onReset(); }}></SubmmitedDialog>}
+      <SubmmitedDialog header={header} content={content} onConfirm={() => { setVisible(false); isUpdate ? onTemplateClear() : props.onReset(); }}></SubmmitedDialog>}
 
 
-    <div className="flex card-container blue-container overflow-hidden" style={{ fontFamily: 'fantasy', margin:'5% 20% 0 20%' }}>
+    <div className="flex card-container blue-container overflow-hidden" style={{ fontFamily: 'fantasy', margin: '5% 20% 0 20%' }}>
 
       <div className="flex-grow-1" >
         <Tooltip target=".custom-choose-btn" content="Choose" position="bottom" />
@@ -138,8 +146,9 @@ export default function UploadDocuments(props) {
     <div className="card flex justify-content-center">
       {console.log(selectedFiles)}
       <Button type="submit" label={isUpdate ? "הוסף מסמכים" : "צור תיק"} className="mt-2"
-        onClick={()=>{
-          isUpdate? addDocuments():createFile()}}/>
+        onClick={() => {
+          isUpdate ? addDocuments() : createFile()
+        }} />
       {/* {selectedFiles.length==0 && <small>יש להעלות קבצים</small>} */}
       {/* <button onClick={()=>console.log(selectedFiles)}></button> */}
     </div>

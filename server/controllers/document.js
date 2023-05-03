@@ -15,7 +15,7 @@ console.log("\n\n\n\naddDocuments");
 }
 
 exports.addDocuments2 = (documents, fileId) => {
-  docsToCraete = documents.map((doc) => { return { fileId: fileId, name: doc.name } })
+  docsToCraete = documents.map((doc) => { return { fileId: fileId, name: doc.name, docType:doc.type} })
   documentDal.addDocument(docsToCraete)
     .then(data => {
       if (!data) {
@@ -97,29 +97,29 @@ exports.getDocumentById = (req, res) => {
 
 exports.getOpenDocumentById = (req, res, next) => {
 
-  function getByteArray(filePath){
-    let fileData = fs.readFileSync(filePath).toString('hex');
-    let result = []
-    for (var i = 0; i < fileData.length; i+=2)
-      result.push('0x'+fileData[i]+''+fileData[i+1])
-    return result;
-}
+//   function getByteArray(filePath){
+//     let fileData = fs.readFileSync(filePath).toString('hex');
+//     let result = []
+//     for (var i = 0; i < fileData.length; i+=2)
+//       result.push('0x'+fileData[i]+''+fileData[i+1])
+//     return result;
+// }
 
-result = getByteArray(`${process.env.PATH_FILE}/${req.params.file}/${req.params.document}.pdf`)
-  res.send(result) 
-//   const options = { 
-//     root: `${process.env.PATH_FILE}/${req.params.file}`
-// }; 
+// result = getByteArray(`${process.env.PATH_FILE}/${req.params.file}/${req.params.document}.pdf`)
+//   res.send(result) 
+  const options = { 
+    root: `${process.env.PATH_FILE}/${req.params.file}`
+}; 
 
-  // const fileName =  `${req.params.document}.pdf`;
-  // res.sendFile(fileName, options, function (err) {
-  //     if (err) {
-  //       console.log(err);
-  //         next(err);
-  //     } else { 
-  //         console.log('Sent:', fileName); 
-  //     }
-  // });
+  const fileName =  `${req.params.document}.${req.params.docType}`;
+  res.sendFile(fileName, options, function (err) {
+      if (err) {
+        console.log(err);
+          next(err);
+      } else { 
+          console.log('Sent:', fileName); 
+      }
+  });
 }
 
 

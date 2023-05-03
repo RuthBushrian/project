@@ -25,19 +25,12 @@ function Result(props) {
             getDocuments();
         }, [])
 
-      
-           
-          
-          
-        debugger
-        const blob = new Blob([file], { type: "image/jpeg" });
-        const blobUrlDocs = URL.createObjectURL(blob);
-        // window.open(blobUrlDocs, '_blank');
         return (
             <>
-                <div className="border-1 surface-border border-round m-2 text-center py-1 px-2">
+            <div class="grid">
+                <div className="flex flex-row flex-column border-1 surface-border border-round m-2 text-center py-1 px-2 ">
                     <div className="mb-3 flex align-items-start flex-wrap card-container yellow-container justify-content-center flex-wrap card-container yellow-container">
-                        {file && (<iframe
+                        {/* {file && (<iframe
                             style={{
                                 width: "100%",
                                 height: "100vh",
@@ -45,10 +38,14 @@ function Result(props) {
                             src={blobUrlDocs}
                             type={"image/jpeg"}
                             title="בדיקה"
-                        />
+                        /> 
+                        )*/}
+                        <div className="col-12 ">
+                        <iframe src= {`http://localhost:4321/document/${props.details.idfile}/${data.name}/${data.docType}`}
+                        style={{height:"500px"}}></iframe>
+<p></p></div>
 
-                        )}
-                        <p>מספר מסמך: {data.iddocument} תוצאת מסמך: {data.result}</p>
+                        <div>מספר מסמך: {data.iddocument} תוצאת מסמך: {data.result}</div>
                         <Avatar
                             label="56%"
                             className="mr-2"
@@ -58,6 +55,7 @@ function Result(props) {
                             shape="circle"
                         />
                     </div>
+                </div>
                 </div>
             </>
         );

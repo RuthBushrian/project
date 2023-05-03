@@ -46,6 +46,8 @@ function App() {
           <Route exact path='/' element={<Login setUserId={setUserIdCallback}></Login>}></Route>
           {/* <Route exact path='/' element={< AllFiles />}></Route> */}
           <Route exact path='/OpenFile' element={< OpenFile />}></Route>
+          <Route exact path='/File' element={<div>< OpenFile /></div>}></Route>
+
           <Route exact path='/AllFiles' element={< AllFiles />}></Route>
           {/* <Route exact path='/Login' element={< Login />}></Route> */}
           <Route exact path='/Dashboard' element={< Dashboard />}></Route>

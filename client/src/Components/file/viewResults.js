@@ -34,12 +34,11 @@ const ViewResults = (props) => {
         </div>
     );
     return (
-
         <>
             <div class="grid" style={{ margin: "0% 10% 0% 10%" }}>
-                <div class="col-5">
+                <div class="col-12 md:col-12 lg:col-5">
                     <div class="grid">
-                        <div class="col-12">
+                        <div class="col-12 ">
                             {props.details && <>
                                 <div class="flex align-items-center flex-wrap card-container green-container p-h-icon-right" >
                                     {props.details.result==1?
@@ -76,7 +75,7 @@ const ViewResults = (props) => {
                 </div> */}
                     </div>
                 </div>
-                <div class="col-7">
+                <div class="col-12 md:col-12 lg:col-7 ">
                     <div dir={'rtl'}>
                         <Result details={props.details}></Result>
                     </div>
