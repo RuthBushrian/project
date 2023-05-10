@@ -9,9 +9,12 @@ officerRouter.route("/:id")
     .get(officerCntrl.getOfficerByID)
     .put(officerCntrl.updateOfficer);
 
+officerRouter.route("/image/:path/:type")
+    .get(officerCntrl.getOfficerImage)
+
 officerRouter.route("/:id/:password")
     .get(officerCntrl.login)
 
-officerRouter.route("/numOfDocuments/:idofficer")  
+officerRouter.route("/num/ofDocuments/:idofficer")  
     .get(officerCntrl.getNumOfDocuments )
 module.exports = officerRouter;  

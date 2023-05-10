@@ -5,7 +5,13 @@ exports.addStage = (stageToAdd) => {
   return Stage.create(stageToAdd);
 };
 
-exports.getStagebyFileId = (id) => {
-  return Stage.findAll({ where: { fileId: id } });
-};
+// exports.getStagebyFileId = (id) => {
+//   return Stage.findAll({ where: { fileId: id } });
+// };
 
+exports.getStagebyFileId = (id) => {
+  return Stage.findAll({
+    where: { fileId: id },
+    include: { model: db.statuses, attributes: ['name'] }
+  });
+};

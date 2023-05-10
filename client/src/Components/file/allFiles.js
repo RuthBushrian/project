@@ -12,9 +12,9 @@ import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { MultiSelect } from 'primereact/multiselect';
 import { Dropdown } from 'primereact/dropdown';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import { Toast } from 'primereact/toast';
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 import UserContext from "../user/UserContext";
+import Progress from './progress'
 
 function AllFiles(props) {
     const { user: officer } = useContext(UserContext);
@@ -24,7 +24,7 @@ function AllFiles(props) {
     const [files, setFiles] = useState([]);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [globalFilter, setGlobalFilter] = useState(null);
-    const [statuses] = useState(['נבדק על ידי הפקיד', 'בבדיקה על ידי הפקיד', , 'נסגר']);
+    const [statuses] = useState(['נבדק על ידי הפקיד', 'בבדיקה על ידי הפקיד','הועבר למנהל' , 'נסגר']);
     const [filters, setFilters] = useState({
         IDnumberOfApplicant: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         ApplicationSubmissionDate: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -174,7 +174,7 @@ function AllFiles(props) {
         <div>
             <Toolbar className="mb-4" right={rightToolbarTemplate} left={LeftToolbarTemplate(selectedFiles, refetch, navigate)}></Toolbar>
             <DataTable ref={dt} /*onRowClick=}*/ value={files} selection={selectedFiles}
-                onRowDoubleClick={EnterFile} onSelectionChange={(e) => { setSelectedFiles(e.value) }} filters={filters}
+                onRowDoubleClick={EnterFile}  onSelectionChange={(e) => { setSelectedFiles(e.value) }} filters={filters}
                 filterDisplay="row" globalFilterFields={['IDnumberOfApplicant', 'status.name', 'ApplicationSubmissionDate']}
                 emptyMessage="No files found." selectionMode={'checkbox'}
                 dataKey="idfile" className="text-right" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}

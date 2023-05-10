@@ -5,6 +5,7 @@ import UploadDocuments from './uploadDocuments';
 import { useLocation } from "react-router-dom"
 import ViewResults from './viewResults';
 import { Get } from '../../Hooks/fetchWithHook'
+import Progress from './progress';
 
 export default function OpenFileWithSteps() {
   const props = useLocation().state;
@@ -74,6 +75,7 @@ export default function OpenFileWithSteps() {
       <div style={{ margin: '1% 1% 1% 1%' }}>
         {renderStepContent()}
       </div>
+      {/* {details.statusId&&<Progress idfile={props.file.fileId}></Progress>} */}
     </>
   );
 }

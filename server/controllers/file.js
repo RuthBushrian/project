@@ -7,7 +7,7 @@ const { login } = require('./officer');
 
 exports.addFile = (req, res) => {
 
-    fileDal.addFile(req.body)
+    fileDal.addFile(req.body) 
    .then(file=>
       {
         if(file)

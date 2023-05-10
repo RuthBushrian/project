@@ -10,4 +10,7 @@ stageRouter.route("/")
 stageRouter.route("/:fileId")
   .get(stageCntrl.getStagebyFileId)
 
+  // stageRouter.route("/stages/:fileId")
+  // .get(stageCntrl.getStagebyFileId)
+  // getStagebyFileId
   module.exports = stageRouter;

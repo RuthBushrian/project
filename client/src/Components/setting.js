@@ -8,7 +8,9 @@ import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
 import { Update } from '../Hooks/fetchData.js';
 import { Get } from '../Hooks/fetchData'
+import { Get as Get1 } from '../Hooks/fetchWithHook.js';
 import UserContext from "./user/UserContext";
+import { ProgressBar } from 'primereact/progressbar';
 import './file/formDemo.css';
 
 export default function Setting() {
@@ -20,7 +22,7 @@ export default function Setting() {
     const [formData, setFormData] = useState({});
     const [txt, setTxt] = useState('');
     const [aPass, setAPass] = useState(false)
-    // const {data:dataOfficer, loading: l, error:e , refetch:r}= Get(`officer/${user.idofficer}`);
+    const {data, loading, error , refetch:r}= Get1(`officer/num/ofDocuments/${user.idofficer}`);
     const check = async () => {
 
 
@@ -120,6 +122,18 @@ export default function Setting() {
         </React.Fragment>
     );
 
+    
+
+    const valueTemplate = (value1, value2) => {
+        return (
+            <React.Fragment>
+                {value2}/<b>{value1}</b>
+            </React.Fragment>
+        );
+    };
+    console.log(data);
+
+
     return (
         <div className="form-demo" style={{ fontFamily: "Segoe UI" }}>
             <Dialog visible={showMessage} footer={dialogFooter} showHeader={false} breakpoints={{ '960px': '80vw' }} style={{ width: '30vw' }}>
@@ -140,7 +154,7 @@ export default function Setting() {
             </Dialog>
             <div className="flex justify-content-center">
                 <div className="card">
-                    <h2 className="text-center">שינוי פרטים אישיים</h2>
+                    <h2 className="text-center"> פרטים אישיים</h2>
                     <form onSubmit={formik.handleSubmit} className="p-fluid">
                         <div className="field">
                             <span className="p-float-label">
@@ -176,7 +190,13 @@ export default function Setting() {
                             </span>
                             {getFormErrorMessage('aPass')}
                         </div></>}
-
+                        {data&& 
+                        <>
+                        <div>כמות המסמכים בשימוש</div>
+                        <br/>
+                        <div className="card">
+                            <ProgressBar value={parseInt((data["num"]/user.numOfDocuments)*100)} displayValueTemplate={()=>valueTemplate(data["num"],user.numOfDocuments) }></ProgressBar>
+                        </div><br/><br/></>}
 
 
                         <Button type="submit" label="אישור" className="mt-2" />

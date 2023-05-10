@@ -16,7 +16,8 @@ module.exports=(sequelize,DataTypes)=>{
         password:{ type: DataTypes.STRING, allowNull: false }, 
         mail:{ type: DataTypes.STRING }, 
         numOfDocuments:{ type: DataTypes.INTEGER, allowNull: false, defaultValue:0 }, 
-       
+        path:{ type: DataTypes.STRING},
+        type:{ type: DataTypes.STRING}
        
         
     },

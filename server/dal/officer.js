@@ -38,7 +38,7 @@ exports.getNumOfDocuments = async(id) => {
     console.log(numOfficer);
 
     const used= await Stage.count({ 
-      include:[{model:db.statuses, where:{name:'בבדיקה ע"י הפקיד'}},
+      include:[{model:db.statuses, where:{name:'בבדיקה על ידי הפקיד'}},
               {model:db.files,  attributes: [], where:{officerId:id}}      
               ],
       where: {[Op.and]:[sequelize.where(sequelize.fn('YEAR', sequelize.col('date')), cyear),sequelize.where(sequelize.fn('MONTH', sequelize.col('date')), cmonth)]}    
@@ -47,5 +47,5 @@ exports.getNumOfDocuments = async(id) => {
     console.log(used);
     console.log(numOfficer-used);
 
-    return (numOfficer-used);
+    return (used);
   };

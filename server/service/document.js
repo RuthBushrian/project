@@ -37,15 +37,20 @@ exports.deleteDocument=async(document)=>
     }
 }
 
-exports.getOpenDocument=(path)=>
+exports.getOpenDocument=(res, path,fileName )=>
 {
-  
-  const fileName = '1.jpg';
+  const options = { 
+    root: path
+}; 
+console.log(path);
+console.log(fileName);
+
+
   res.sendFile(fileName, options, function (err) {
       if (err) {
-          next(err);
-      } else {
-          console.log('Sent:', fileName);
+        console.log(err);
+      } else { 
+          console.log('Sent:', fileName); 
       }
   });
 

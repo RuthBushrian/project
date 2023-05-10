@@ -1,0 +1,12 @@
+.ui-panel .ui-panel-content {
+    padding: 100px 100px;
+}
+.ui-tabs .ui-tabs-panel {
+    padding: 100px 100px;
+}
+
+.ui-tabview .ui-tabview-panel {
+    padding: "100px";
+ }
+
+ .ui-panel .ui-panel-content {padding: 0;} 

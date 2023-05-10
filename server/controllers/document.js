@@ -1,5 +1,5 @@
 const documentDal = require('../dal/document');
-const { deleteDocument, uploadDocument } = require('../service/document')
+const { deleteDocument, uploadDocument, getOpenDocument } = require('../service/document')
 const path = require("path");
 var fs = require('fs');
 
@@ -97,29 +97,8 @@ exports.getDocumentById = (req, res) => {
 
 exports.getOpenDocumentById = (req, res, next) => {
 
-//   function getByteArray(filePath){
-//     let fileData = fs.readFileSync(filePath).toString('hex');
-//     let result = []
-//     for (var i = 0; i < fileData.length; i+=2)
-//       result.push('0x'+fileData[i]+''+fileData[i+1])
-//     return result;
-// }
+  getOpenDocument(res, `${process.env.PATH_FILE}${req.params.file}`, `${req.params.document}.${req.params.docType}` );
 
-// result = getByteArray(`${process.env.PATH_FILE}/${req.params.file}/${req.params.document}.pdf`)
-//   res.send(result) 
-  const options = { 
-    root: `${process.env.PATH_FILE}/${req.params.file}`
-}; 
-
-  const fileName =  `${req.params.document}.${req.params.docType}`;
-  res.sendFile(fileName, options, function (err) {
-      if (err) {
-        console.log(err);
-          next(err);
-      } else { 
-          console.log('Sent:', fileName); 
-      }
-  });
 }
 
 

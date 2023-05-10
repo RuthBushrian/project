@@ -1,5 +1,6 @@
 const officerDal= require('../dal/officer');
 const officer = require('../models/officer');
+const { deleteDocument, uploadDocument, getOpenDocument } = require('../service/document')
 
 exports.login=(req, res) =>
 {
@@ -88,3 +89,10 @@ exports.getNumOfDocuments = async(req, res) => {
     });
   };
 };
+
+
+exports.getOfficerImage = (req, res, next) => {
+  
+  getOpenDocument(res, `${process.env.PATH_OFFICER}`, `${req.params.path}.${req.params.type}`);
+
+}
