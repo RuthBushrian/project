@@ -63,10 +63,6 @@ exports.getAllFiles= (filterParams)=>{
     if(filterParams.ApplicationSubmissionDateE)
         wh["ApplicationSubmissionDate"]= {[Op.lte]:filterParams.ApplicationSubmissionDateE};
 
-    // const closedStatus=3;
-    
-    // wh["[Op.or]"]= [{ statusId: {[Op.lt]:closedStatus} }, {}]
-
     const qry={};
     qry.where= wh;
 

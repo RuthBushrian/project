@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import './a.css'
 import { TabMenu } from 'primereact/tabmenu';
 import { useNavigate } from "react-router-dom"
 import UserContext from "./user/UserContext";
@@ -12,9 +11,7 @@ export default function Menu() {
 
 
   const { user } = useContext(UserContext);
-  console.log(user);
   const navigate = useNavigate();
-  console.log(`http://localhost:4321/officer/image/${user.path}/${user.type}`)
 
   const items = [
     {

@@ -57,7 +57,7 @@ exports.getActiveFiles = (officerId) => {
 
     return File.findAll({
         attributes: [
-        [sequelize.fn('COUNT','*'),'active']
+        [sequelize.fn('COUNT','*'),'num']
         ],
         where: { officerId: officerId ,statusId:{[Op.lte]:2 }}
     })
@@ -67,7 +67,7 @@ exports.getFakeFiles = (officerId) => {
 
     return File.findAll({
         attributes: [
-        [sequelize.fn('COUNT','*'),'fake']
+        [sequelize.fn('COUNT','*'),'num']
         ],
         where: { officerId: officerId ,result:0}
     })
@@ -77,7 +77,7 @@ exports.getUnderCheckFiles = (officerId) => {
 
     return File.findAll({
         attributes: [
-        [sequelize.fn('COUNT','*'),'UnderCheck']
+        [sequelize.fn('COUNT','*'),'num']
         ],
         where: { officerId: officerId ,statusId:1 }
     })
@@ -87,7 +87,7 @@ exports.getCheckedFiles = (officerId) => {
 
     return File.findAll({
         attributes: [
-            [sequelize.fn('COUNT','*'),'Checked']
+            [sequelize.fn('COUNT','*'),'num']
         ],
         where:  { officerId: officerId ,statusId:2}
     })

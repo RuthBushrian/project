@@ -14,14 +14,10 @@ function Graf() {
         const reds = [];
         const greens = [];
         if (data) {
-            console.log((data));
-            console.log("not loading");
+
             data.forEach(element => {
                 years.push(element.year)
             });
-
-            console.log(years);
-
 
             data.forEach(element => {
                 reds.push(element.red)

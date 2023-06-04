@@ -73,9 +73,13 @@ exports.updateOfficer=(req, res)=>{
 exports.getNumOfDocuments = async(req, res) => {
   const id = req.params.idofficer;
   try{
-    const data=await officerDal.getNumOfDocuments(id);
-    if (data) {
-      res.send({'num':data});
+    const officer=await officerDal.getNumOfDocuments(id);
+    const used=await officerDal.getNumOfUsedDocuments(id);
+
+    if (officer && used) {
+      console.log(officer.numOfDocuments);
+      console.log("officer "+used);
+      res.send({'num':officer.numOfDocuments - used});
     } 
     else {
       res.status(404).send({
@@ -84,7 +88,9 @@ exports.getNumOfDocuments = async(req, res) => {
     }
   }
   catch(err){
+    console.log("err"+err);
     res.status(500).send({
+      
       message: `Error retrieving number of documents for officer with id= ${id}.`,
     });
   };

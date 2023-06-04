@@ -24,22 +24,18 @@ export default function Setting() {
     const [aPass, setAPass] = useState(false)
     const {data, loading, error , refetch:r}= Get1(`officer/num/ofDocuments/${user.idofficer}`);
     const check = async () => {
-
-
         setTxtvi(true);
         setShowMessage(false)
-        const data = (await Get(`officer/${user.idofficer}`)).data;
-        if (data.password.localeCompare(value) == 0) {
+        const data1 = (await Get(`officer/${user.idofficer}`)).data;
+        if (data1.password.localeCompare(value) == 0) {
             if (formData.mail == '')
-                formData.mail = data.mail;
+                formData.mail = data1.mail;
             if (formData.name == '')
-                formData.name = data.name;
+                formData.name = data1.name;
             if (formData.password == '')
-                formData.password = data.password;
-            console.log("aaa");
-            console.log(formData);
+                formData.password = data1.password;
+
             await Update(`officer/${user.idofficer}`, formData);
-            console.log("vvv");
             setTxt("הפרטים שונו");
             refetch()
         }
@@ -51,13 +47,6 @@ export default function Setting() {
 
 
     const formik = useFormik({
-        // initialValues: {
-        //     name: dataOfficer ? dataOfficer.name: '',
-        //     mail: dataOfficer ? dataOfficer.mail: '',
-        //     password: '',
-        //     aPass:''
-        // },
-        // enableReinitialize:true,
 
         initialValues: {
             name: '',
@@ -131,7 +120,6 @@ export default function Setting() {
             </React.Fragment>
         );
     };
-    console.log(data);
 
 
     return (

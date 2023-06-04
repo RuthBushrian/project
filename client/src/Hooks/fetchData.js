@@ -4,7 +4,6 @@ import { URL } from '../Constant';
  const Delete= async(url, body={})=>
 {
   try{
-    console.log(body);
     const res= await axios.delete(URL+url, {data:body});
   }
   catch(err){
@@ -17,7 +16,6 @@ import { URL } from '../Constant';
 {
   try{
     const res= await axios.post(URL+url, filesToCreate);
-    console.log(res);
     return res.data;
   }
   catch(err){
@@ -31,7 +29,6 @@ const Update= async(url, objToUpdate)=>
 {
   try{
     const res= await axios.put(`${URL}${url}`, objToUpdate);
-    console.log(res);
     return res.data;
   }
   catch(err){
@@ -55,13 +52,6 @@ const FetchFileData = async (path) => {
   try {
 
     const response = await axios.get(`${URL}document/${path}`, { responseType: 'arraybuffer' });
-    // const base64Data = btoa(
-    //   new Uint8Array(response.data).reduce(
-    //     (data, byte) => data + String.fromCharCode(byte),
-    //     ''
-    //   )
-    // );
-    console.log(response);
     return(response);
   } catch (error) {
     console.error(error);

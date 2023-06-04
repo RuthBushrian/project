@@ -3,7 +3,6 @@ import { URL } from '../Constant'
 
 const Post = (url, body = {}) => {
 
-    console.log(body);
     const [{ data, loading, error }, refetch] = useAxios(
         {
             url: URL + url,
@@ -17,19 +16,10 @@ const Post = (url, body = {}) => {
     return { data, loading, error, refetch };
 
 };
-//  const CloseFileByOfficer= (details) => {
-//     const [{ data, loading, error }, refetch] = useAxios(
-//       {
-//     url:"http://localhost:4321/file/401",
-//     method:'put',
-//     data:details}
-//   );
-//     return { data, loading, error, refetch }
-//   };
 
 const Get = (url) => {
-    console.log(URL + url);
     const [{ data, loading, error }, refetch] = useAxios(URL + url);
+    console.log(URL + url);
     if (error)
         console.log(error);
     return { data, loading, error, refetch };

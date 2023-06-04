@@ -13,7 +13,6 @@ function App() {
           ''
         )
       );
-      console.log(base64Data);
       setFileData(base64Data);
     } catch (error) {
       console.error(error);

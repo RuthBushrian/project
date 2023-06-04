@@ -56,6 +56,8 @@ db.document_results.belongsTo(db.algorithms,{foreignKey:'algorithmId'})
 db.stages_of_progress_of_files.belongsTo(db.statuses, {foreignKey:'statusId'})
 db.stages_of_progress_of_files.belongsTo(db.files, { foreignKey: 'fileId', onDelete: 'Cascade', onUpdate: 'Cascade'})
 db.files.hasMany(db.stages_of_progress_of_files, { foreignKey: 'fileId', onDelete: 'Cascade', onUpdate: 'Cascade'})
+db.files.hasMany(db.documents, { foreignKey: 'fileId', onDelete: 'Cascade', onUpdate: 'Cascade'})
+
 db.managers.hasMany(db.officers, { foreignKey: 'managerId'})
 
 

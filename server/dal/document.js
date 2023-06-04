@@ -10,9 +10,6 @@ exports.getDocumentById=(id)=>{
     return Document.findByPk(id);
 };
 
-// exports.getOpenDocumentById=(id)=> {
-// }
-
 exports.getDocumentsByFile=(idFile)=>{
     return Document.findAll({where: {fileId: idFile}});
 };

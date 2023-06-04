@@ -22,11 +22,8 @@ export default function Login(props) {
 const navigate = useNavigate();
 
   const handleLogin = async () => {
-    console.log("handleLogin");
     try {
-    //   const response = await refetch();
     const response= await Get(`officer/${formik.values.userName}/${formik.values.password}`)  
-    console.log(response);
     props.setUserId(response.data.idofficer);
     navigate("/openfile")
 

@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'primereact/button';
 import { Carousel } from 'primereact/carousel';
 import { Get } from '../../Hooks/fetchWithHook';
-import doc from './doc.jpg'
-import { Avatar } from "primereact/avatar";
 import { FetchFileData } from '../../Hooks/fetchData';
 
 function Result(props) {
@@ -43,8 +40,6 @@ function Result(props) {
     };
 
     return (<>
-
-        {/* <div className="card flex justify-content-center"> */}
         {data && <div dir={'ltr'}>
             <Carousel value={data} numVisible={1} numScroll={1} orientation="horizontal" verticalViewPortHeight="360px"
                 itemTemplate={ProductTemplate} />

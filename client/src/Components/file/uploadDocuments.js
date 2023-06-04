@@ -1,13 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { Button } from 'primereact/button';
-import { Create, Update } from '../../Hooks/fetchData'
+import { Create, Get, Update } from '../../Hooks/fetchData'
 import { FileUpload } from 'primereact/fileupload';
 import { Tooltip } from 'primereact/tooltip';
 import { Tag } from 'primereact/tag';
-// import { URL } from '../../Constant';
 import './formDemo.css'
 import SubmmitedDialog from '../submmitedDialog';
 import UserContext from "../user/UserContext";
+import { iconV, iconX } from '../../Constant';
+import PDF from '../../images/PDF.png'
 
 
 export default function UploadDocuments(props) {
@@ -16,6 +17,8 @@ export default function UploadDocuments(props) {
   const [formData, setFormData] = useState(props.details);
   const isUpdate = props.status > 0;
   const [visible, setVisible] = useState(false);
+  const [visibleErr, setVisibleErr] = useState(false);
+
   const [selectedFiles, setSelectedFiles] = useState([]);
 
   const onTemplateRemove = (file, callback) => {
@@ -29,10 +32,12 @@ export default function UploadDocuments(props) {
   };
 
   const itemTemplate = (file, props) => {
+    console.log(file);
     return (
+
       <div className="flex align-items-center flex-wrap" style={{ width: '60%' }}>
         <div className="flex align-items-center" style={{ width: '60%' }}>
-          <img alt={file.name} role="presentation" src={file.objectURL} width={'15%'} />
+          <img alt={file.name} role="presentation" src={file.type =="application/pdf"? PDF :file.objectURL} width={'15%'} />
           <span className="flex flex-column text-left ml-3" style={{ margin: '3%' }}>
             {file.name}
             {<br />}
@@ -57,10 +62,9 @@ export default function UploadDocuments(props) {
   };
 
   const handleFileUpload = async (event) => {
-    const toTtpe={"image/jpeg":"jpeg", "application/pdf":"pdf", "image/png":"png","image/gif":"gif"}
+    const toTtpe = { "image/jpeg": "jpeg", "application/pdf": "pdf", "image/png": "png", "image/gif": "gif" }
 
     const curFiles = [...selectedFiles];
-    console.log(curFiles);
     for (let i = 0; i < event.files.length; i++) {
       const file = event.files[i];
       if (file.objectURL == undefined)
@@ -84,32 +88,33 @@ export default function UploadDocuments(props) {
   const cancelOptions = { icon: 'pi pi-fw pi-times', iconOnly: true, className: 'custom-cancel-btn p-button-danger p-button-rounded p-button-outlined' };
   const createFile = async () => {
 
-
-    const fileToCreate = {
-      ...formData,
-      "statusId": 1,
-      "documents": selectedFiles,
-      "officerId": user.idofficer
-    };
-    console.log(selectedFiles);
-    const res = await Create(`file`, fileToCreate);
-    setFormData(res.body);
-    console.log(formData);
-    setVisible(true);
-    // formik.resetForm();
+    const used = await Get(`officer/num/ofDocuments/${user.idofficer}`)
+    if (used.data.num < selectedFiles.length)
+    {
+      setVisibleErr(true);
+    }
+    else 
+    {
+      const fileToCreate = {
+        ...formData,
+        "statusId": 1,
+        "documents": selectedFiles,
+        "officerId": user.idofficer
+      };
+      const res = await Create(`file`, fileToCreate);
+      setFormData(res.body);
+      setVisible(true);
+    }
   }
 
   const addDocuments = async () => {
-    const docs = selectedFiles;
 
-    const res = await Create(`$document/${props.details.idfile}`, { documents: selectedFiles });
-    // setFormData(res.body);
-    // console.log(formData);
+    await Create(`$document/${props.details.idfile}`, { documents: selectedFiles });
     setVisible(true);
-    // formik.resetForm();
+    
   }
 
-  const header = isUpdate ? "😊 התיק נפתח בהצלחה" : "😊 התיק עודכן בהצלחה"
+  const header = isUpdate ? "😊 התיק עודכן בהצלחה" : "😊 התיק נפתח בהצלחה"
   const content =
     !isUpdate ?
       <><p>
@@ -124,11 +129,12 @@ export default function UploadDocuments(props) {
         הערות : {formData.remarks != null ? formData.remarks == '' ? "לא הוכנסו הערות" : formData.remarks : "   "}
       </p>
         <p>התיק והמסמכים המצורפים נשלחים כעת לבדיקה ואימות, בעוד זמן קצר תוכלו לצפות בתוצאות. הבדיקה הינה חדשנית ואמינה ואחוזי ההצלחה שלה גבוהים. אולם עם זאת עלינו לציין שהיא מבוססת על בינה מלאכותית, וכמו רוב הטכנולוגיות הללו היא אינה באמינות של מאת האחוזים</p></> :
-      <p>המסמכים הועלו בהצלחה וכעת נשלחים לבדיקה</p>
+      <p>המסמכים הועלו בהצלחה וכעת נשלחים לבדיקה</p>        
   return (<>
     {visible &&
-      <SubmmitedDialog header={header} content={content} onConfirm={() => { setVisible(false); isUpdate ? onTemplateClear() : props.onReset(); }}></SubmmitedDialog>}
-
+      <SubmmitedDialog header={header} content={content} icon ={iconV} onConfirm={() => { setVisible(false); isUpdate ? onTemplateClear() : props.onReset(); }}></SubmmitedDialog>}
+    {visibleErr &&
+      <SubmmitedDialog header={"שגיאה"} content={"אין ברשותך מספיק מסמכים בקש מהמנהל לקנות חבילה נוספת"} icon = {iconX} onConfirm={() => { setVisibleErr(false); }}></SubmmitedDialog>}
 
     <div className="flex card-container blue-container overflow-hidden" style={{ fontFamily: 'fantasy', margin: '5% 20% 0 20%' }}>
 
@@ -144,13 +150,10 @@ export default function UploadDocuments(props) {
     </div>
 
     <div className="card flex justify-content-center">
-      {console.log(selectedFiles)}
       <Button type="submit" label={isUpdate ? "הוסף מסמכים" : "צור תיק"} className="mt-2"
         onClick={() => {
           isUpdate ? addDocuments() : createFile()
-        }} />
-      {/* {selectedFiles.length==0 && <small>יש להעלות קבצים</small>} */}
-      {/* <button onClick={()=>console.log(selectedFiles)}></button> */}
+        }} disabled={props.status > 2} />
     </div>
   </>);
 }

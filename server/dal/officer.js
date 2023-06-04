@@ -1,6 +1,7 @@
 const db = require("../models/index");
 const Officer= db.officers;
 const Op = db.Sequelize.Op;
+const File = db.files;
 const Stage=db.stages_of_progress_of_files;
 const sequelize= require('sequelize');
 
@@ -27,25 +28,23 @@ exports.updateOfficer=(id,officerToUpdate)=>{
 
 };
 exports.getNumOfDocuments = async(id) => {
+     
+    return await Officer.findByPk(id);
+
+  };
+
+  exports.getNumOfUsedDocuments = async(id) => {
     const ts = Date.now();
     const date_ob = new Date(ts);
     const cyear = date_ob.getFullYear();
     const cmonth = date_ob.getMonth()+1;
   
-    let officer=await Officer.findAll({ where: { idofficer: id } });
-    numOfficer=officer[0].numOfDocuments;
-
-    console.log(numOfficer);
-
-    const used= await Stage.count({ 
-      include:[{model:db.statuses, where:{name:'בבדיקה על ידי הפקיד'}},
-              {model:db.files,  attributes: [], where:{officerId:id}}      
+    return await File.count({ 
+      include:[
+              {model:db.stages_of_progress_of_files,  attributes: ['date']}    , 
+              {model:db.documents}
               ],
-      where: {[Op.and]:[sequelize.where(sequelize.fn('YEAR', sequelize.col('date')), cyear),sequelize.where(sequelize.fn('MONTH', sequelize.col('date')), cmonth)]}    
+      where: {[Op.and]:[sequelize.where(sequelize.fn('YEAR', sequelize.col('date')), cyear),sequelize.where(sequelize.fn('MONTH', sequelize.col('date')), cmonth), {officerId:id}]}    
     });
-    
-    console.log(used);
-    console.log(numOfficer-used);
+  }
 
-    return (used);
-  };

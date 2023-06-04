@@ -15,7 +15,6 @@ export default function OpenFileWithSteps() {
   const [files, setFiles] = useState([]);
   const { data, loading, error, refetch } = props ? Get(`file/${props.file.idfile}`) : {};
   useEffect(() => {
-    console.log(data);
     setDetails(data);
   }, [data])
   const setIndex = (newIndx) => {
@@ -70,12 +69,11 @@ export default function OpenFileWithSteps() {
 
   return (
     <>
-      {console.log(props)}
       <Steps model={steps} activeIndex={activeIndex} onSelect={handleStepSelect} readOnly={false} />
       <div style={{ margin: '1% 1% 1% 1%' }}>
         {renderStepContent()}
       </div>
-      {/* {details.statusId&&<Progress idfile={props.file.fileId}></Progress>} */}
+      {props && props.file.idfile &&<Progress idfile={props.file.idfile}></Progress>}
     </>
   );
 }
