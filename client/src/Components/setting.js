@@ -178,6 +178,7 @@ export default function Setting() {
                             </span>
                             {getFormErrorMessage('aPass')}
                         </div></>}
+                        {console.log(data)}
                         {data&& 
                         <>
                         <div>כמות המסמכים בשימוש</div>
